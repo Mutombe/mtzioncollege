@@ -19,17 +19,17 @@ class Student(models.Model):
 
 
 class Registration(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
-    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
-    status = models.CharField(
-        max_length=20,
-        choices=[
-            ("PENDING", "Pending"),
-            ("APPROVED", "Approved"),
-            ("DENIED", "Denied"),
-        ],
-    )
+    STATUS_CHOICES = [
+        ('PENDING', 'Pending'),
+        ('APPROVED', 'Approved'),
+        ('DENIED', 'Denied'),
+    ]
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="registrations", null=True)
+    branch = models.ForeignKey('Branch', on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    admin_notes = models.TextField(blank=True, null=True)
 
 
 class ReportCardImage(models.Model):

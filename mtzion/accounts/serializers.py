@@ -26,9 +26,3 @@ class CustomUserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ["id", "username", "email", "is_admin"]
         read_only_fields = ["id", "is_admin"]
-
-
-class BranchSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Branch
-        fields = ["id", "name"]

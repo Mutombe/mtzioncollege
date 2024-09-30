@@ -26,7 +26,7 @@ class ReportCardPDFSerializer(serializers.ModelSerializer):
         fields = ["pdf"]
 
 
-class StudentSerializer(serializers.ModelSerializer):
+class RegistrationSerializer(serializers.ModelSerializer):
     report_card_images = ReportCardImageSerializer(many=True, required=False)
     report_card_pdf = ReportCardPDFSerializer(required=False)
 
@@ -55,3 +55,26 @@ class StudentSerializer(serializers.ModelSerializer):
             ReportCardPDF.objects.create(student=student, **report_card_pdf)
 
         return student
+    
+class AdminRegistrationActionSerializer(serializers.Serializer):
+    action = serializers.ChoiceField(choices=['approve', 'deny'])
+    admin_notes = serializers.CharField(required=False, allow_blank=True, max_length=500)
+
+    def validate_action(self, value):
+        if value not in ['approve', 'deny']:
+            raise serializers.ValidationError("Action must be either 'approve' or 'deny'.")
+        return value
+
+    def update(self, instance, validated_data):
+        action = validated_data.get('action')
+        admin_notes = validated_data.get('admin_notes', '')
+
+        if action == 'approve':
+            instance.status = 'APPROVED'
+        elif action == 'deny':
+            instance.status = 'DENIED'
+
+        instance.admin_notes = admin_notes
+        instance.save()
+        return instance
+

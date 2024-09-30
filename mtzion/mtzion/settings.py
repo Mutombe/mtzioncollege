@@ -1,6 +1,5 @@
 import json
 import os
-import urllib.request
 from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 from pathlib import Path
@@ -28,17 +27,6 @@ AUTH0_API_IDENTIFIER = os.getenv('AUTH0_API_IDENTIFIER')
 AUTH0_CLIENT_ID = os.getenv('AUTH0_CLIENT_ID')
 AUTH0_CLIENT_SECRET = os.getenv('AUTH0_CLIENT_SECRET')
 
-
-def get_auth0_public_key():
-    global PUBLIC_KEY
-    if PUBLIC_KEY:
-        return PUBLIC_KEY
-    jwks = json.loads(urllib.request.urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json').read())
-    cert = '-----BEGIN CERTIFICATE-----\n' + jwks['keys'][0]['x5c'][0] + '\n-----END CERTIFICATE-----'
-    certificate = load_pem_x509_certificate(cert.encode('utf-8'), default_backend())
-    PUBLIC_KEY = certificate.public_key()
-    return PUBLIC_KEY
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -68,18 +56,25 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'mtzion.urls'
 
+AUTHENTICATION_BACKENDS = [
+    'accounts.auth_backend.Auth0Backend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'accounts.auth0_authentication.Auth0Authentication',
     ),
 }
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 TEMPLATES = [
     {
@@ -102,9 +97,13 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 JWT_AUTH = {
+    'JWT_PAYLOAD_GET_USERNAME_HANDLER':
+        'accounts.utils.jwt_get_username_from_payload_handler',
+    'JWT_DECODE_HANDLER':
+        'accounts.utils.jwt_decode_token',
+    'JWT_ALGORITHM': 'RS256',
     'JWT_AUDIENCE': AUTH0_API_IDENTIFIER,
     'JWT_ISSUER': f'https://{AUTH0_DOMAIN}/',
-    'JWT_ALGORITHM': 'RS256',
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
 }
 
