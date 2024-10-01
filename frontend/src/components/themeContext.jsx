@@ -1,4 +1,3 @@
-// src/ThemeContext.js
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const ThemeContext = createContext({
@@ -14,6 +13,7 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem('theme', theme);
+    document.body.className = theme === "default" ? "bg-gray-700 text-white" : "bg-gray-900 text-white";
   }, [theme]);
 
   const toggleTheme = () => {

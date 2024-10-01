@@ -5,7 +5,7 @@ import { Home, Search, BookOpen, Phone } from 'lucide-react';
 
 const NotFoundPage = () => {
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-800 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-800 flex items-center justify-center px-4 sm:px-6 lg:px-8 rounded-lg">
       <div className="max-w-md w-full space-y-8 text-center">
         <motion.div
           initial={{ opacity: 0, y: -20 }}

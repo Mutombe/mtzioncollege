@@ -5,7 +5,6 @@ import { Users, FileText, CreditCard, CheckCircle, XCircle, AlertCircle, Menu, X
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('registrations');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const tabs = [
     { id: 'registrations', label: 'Registrations', icon: Users },
@@ -13,13 +12,8 @@ const AdminDashboard = () => {
     { id: 'payments', label: 'Payments', icon: CreditCard },
   ];
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark');
-  };
-
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'dark' : ''}`}>
+    <div className="min-h-screen">
       <div className="bg-gray-100 dark:bg-gray-900 min-h-screen transition-colors duration-300">
         <header className="bg-navy-900 dark:bg-navy-800 text-white py-6">
           <div className="container mx-auto px-4 flex justify-between items-center">
@@ -28,9 +22,6 @@ const AdminDashboard = () => {
               <p className="text-light-blue-300 mt-2">Welcome back, Admin!</p>
             </div>
             <div className="flex items-center space-x-4">
-              <button onClick={toggleDarkMode} className="p-2 rounded-full hover:bg-navy-800 dark:hover:bg-navy-700">
-                {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
-              </button>
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                 className="p-2 rounded-full hover:bg-navy-800 dark:hover:bg-navy-700 md:hidden"
@@ -299,19 +290,19 @@ const PaymentsTab = () => (
       </thead>
       <tbody>
         <PaymentRow
-          name="Alice Johnson"
+          name="Bright Mafamu"
           amount="$500"
           date="2025-01-15"
           status="Paid"
         />
         <PaymentRow
-          name="Bob Smith"
+          name="John Mutukudzi"
           amount="$500"
           date="2025-02-01"
           status="Pending"
         />
         <PaymentRow
-          name="Charlie Brown"
+          name="Mellisa Masiko"
           amount="$500"
           date="2025-01-31"
           status="Overdue"

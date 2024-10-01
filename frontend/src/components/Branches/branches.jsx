@@ -8,33 +8,33 @@ const branches = [
     name: 'Main Campus',
     location: 'Harare, Zimbabwe',
     students: 1200,
-    grades: 'Grade 1-6',
+    grades: 'Grade ECD-7',
     description: 'Our flagship campus with state-of-the-art facilities and a rich history of academic excellence.',
-    image: '/api/placeholder/800/400',
+    image: 'images/mtzion3.jpg',
   },
   {
     id: 2,
-    name: 'North Campus',
-    location: 'Bulawayo, Zimbabwe',
+    name: 'Eyecourt',
+    location: 'Harare, Zimbabwe',
     students: 800,
-    grades: 'Grade 1-6',
+    grades: 'Grade ECD-7',
     description: 'A modern campus known for its innovative STEM programs and spacious sports facilities.',
-    image: '/api/placeholder/800/400',
+    image: 'images/mtzion.png',
   },
   {
     id: 3,
-    name: 'West Campus',
-    location: 'Gweru, Zimbabwe',
+    name: 'Dema Campus',
+    location: 'Chitungwiza, Zimbabwe',
     students: 600,
-    grades: 'Grade 1-4',
+    grades: 'Grade ECD-7',
     description: 'Our newest campus, focusing on early childhood education with a nature-inspired learning environment.',
-    image: '/api/placeholder/800/400',
+    image: 'images/mtzion2.jpg',
   },
 ];
 
 const BranchesPage = () => {
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 rounded-lg">
       <header className="bg-navy-900 text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold mb-2">Our Branches</h1>
