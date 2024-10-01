@@ -55,17 +55,39 @@ class RegistrationViewSet(viewsets.ModelViewSet):
     serializer_class = RegistrationSerializer
 
     def get_permissions(self):
-        if self.action in ['update', 'partial_update']:
+        if self.action in ['update', 'partial_update', 'admin_action']:
             return [IsAdminUser()]
         return [permissions.IsAuthenticated()]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
     def get_queryset(self):
         user = self.request.user
         if user.is_admin:
             return Registration.objects.all()
         return Registration.objects.filter(user=user)
+
+    @action(detail=True, methods=['post'])
+    def admin_action(self, request, pk=None):
+        registration = self.get_object()
+        serializer = AdminRegistrationActionSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            action = serializer.validated_data['action']
+            admin_notes = serializer.validated_data.get('admin_notes', '')
+            
+            if action == 'approve':
+                registration.status = 'APPROVED'
+            elif action == 'deny':
+                registration.status = 'DENIED'
+            
+            registration.admin_notes = admin_notes
+            registration.save()
+            
+            return Response({'status': 'registration updated'})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
 

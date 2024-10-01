@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Branch, Grade, ReportCardImage, ReportCardPDF, Student
+from .models import Branch, Form, Grade, ReportCardImage, ReportCardPDF, Student
 
 
 class BranchSerializer(serializers.ModelSerializer):
@@ -11,6 +11,11 @@ class BranchSerializer(serializers.ModelSerializer):
 class GradeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grade
+        fields = ["id", "name"]
+
+class FormSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Form
         fields = ["id", "name"]
 
 
@@ -65,16 +70,4 @@ class AdminRegistrationActionSerializer(serializers.Serializer):
             raise serializers.ValidationError("Action must be either 'approve' or 'deny'.")
         return value
 
-    def update(self, instance, validated_data):
-        action = validated_data.get('action')
-        admin_notes = validated_data.get('admin_notes', '')
-
-        if action == 'approve':
-            instance.status = 'APPROVED'
-        elif action == 'deny':
-            instance.status = 'DENIED'
-
-        instance.admin_notes = admin_notes
-        instance.save()
-        return instance
 
