@@ -1,7 +1,8 @@
 # accounts/serializers.py
 from rest_framework import serializers
-from .models import CustomUser, UserProfile, Branch
+from .models import CustomUser
 from registration.serializers import BranchSerializer, GradeSerializer
+from registration.models import UserProfile
 
 
 class CustomUserSerializer(serializers.ModelSerializer):

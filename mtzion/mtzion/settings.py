@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     # 3rd party
     'registration',
     'accounts',
+    'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_jwt',
     'corsheaders',
 ]
@@ -57,7 +59,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'mtzion.urls'
 
 AUTHENTICATION_BACKENDS = [
-    'accounts.auth_backend.Auth0Backend',
+    'accounts.auth0_authentication.Auth0Authentication',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -92,7 +94,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'backend.wsgi.application'
+WSGI_APPLICATION = 'mtzion.wsgi.application'
 
 
 

@@ -18,33 +18,12 @@ class Student(models.Model):
     report_card = models.FileField(upload_to="report_cards/")
 
 
-class Registration(models.Model):
-    STATUS_CHOICES = [
-        ('PENDING', 'Pending'),
-        ('APPROVED', 'Approved'),
-        ('DENIED', 'Denied'),
-    ]
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="registrations", null=True)
-    branch = models.ForeignKey('Branch', on_delete=models.CASCADE)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    admin_notes = models.TextField(blank=True, null=True)
+class Form(models.Model):
+    name = models.CharField(max_length=100)
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name="forms")
 
-
-class ReportCardImage(models.Model):
-    student = models.ForeignKey(
-        Student, related_name="report_card_images", on_delete=models.CASCADE
-    )
-    image = models.ImageField(upload_to="report_cards/")
-    page_number = models.IntegerField()
-
-
-class ReportCardPDF(models.Model):
-    student = models.OneToOneField(
-        Student, related_name="report_card_pdf", on_delete=models.CASCADE
-    )
-    pdf = models.FileField(upload_to="report_cards/")
+    def __str__(self):
+        return f"{self.name} - {self.branch.name}"
 
 
 class Grade(models.Model):
@@ -55,10 +34,48 @@ class Grade(models.Model):
         return f"{self.name} - {self.branch.name}"
 
 
+class Registration(models.Model):
+    STATUS_CHOICES = [
+        ("PENDING", "Pending"),
+        ("APPROVED", "Approved"),
+        ("DENIED", "Denied"),
+    ]
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, related_name="registrations", null=True
+    )
+    form = models.ForeignKey(Form, on_delete=models.CASCADE, null=True, blank=True)
+    grade = models.ForeignKey(Grade, on_delete=models.CASCADE, null=True, blank=True)
+    branch = models.ForeignKey("Branch", on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="PENDING")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    admin_notes = models.TextField(blank=True, null=True)
+    transfer_letter = models.FileField(upload_to="transfer_letters/", null=True)
+    report_card_type = models.CharField(
+        max_length=20, choices=[("PDF", "PDF"), ("IMAGES", "Images")], default="IMAGES"
+    )
+
+
+class ReportCardImage(models.Model):
+    registration = models.ForeignKey(
+        Registration, related_name="report_card_images", on_delete=models.CASCADE, null=True
+    )
+    image = models.ImageField(upload_to="report_cards/")
+    page_number = models.IntegerField()
+
+
+class ReportCardPDF(models.Model):
+    registration = models.OneToOneField(
+        Registration, related_name="report_card_pdf", on_delete=models.CASCADE, null=True
+    )
+    pdf = models.FileField(upload_to="report_cards/")
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     branch = models.ForeignKey(Branch, on_delete=models.SET_NULL, null=True)
+    form = models.ForeignKey(Form, on_delete=models.SET_NULL, null=True, blank=True)
     grade = models.ForeignKey(Grade, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.branch.name if self.branch else 'No Branch'} - {self.grade.name if self.grade else 'No Grade'}"
+        return f"{self.user.username} - {self.branch.name if self.branch else 'No Branch'} - {self.form.name if self.form else 'No Form'} - {self.grade.name if self.grade else 'No Grade'}"

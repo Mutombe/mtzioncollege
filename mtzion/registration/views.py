@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from mtzion.accounts.serializers import UserProfileSerializer
+from accounts.serializers import UserProfileSerializer
 from .models import Branch, Grade, Registration, UserProfile
 from .serializers import BranchSerializer, GradeSerializer
 from rest_framework import viewsets, permissions, status
