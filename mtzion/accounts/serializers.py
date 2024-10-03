@@ -20,10 +20,3 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ["id", "user", "branch", "grade"]
-
-
-class CustomUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ["id", "username", "email", "is_admin"]
-        read_only_fields = ["id", "is_admin"]

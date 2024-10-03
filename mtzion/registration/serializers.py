@@ -5,7 +5,7 @@ from .models import Branch, Form, Grade, ReportCardImage, ReportCardPDF, Student
 class BranchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Branch
-        fields = ["id", "name", "location"]
+        fields = ["id", "name", "location", "desscription", "image", "students"]
 
 
 class GradeSerializer(serializers.ModelSerializer):

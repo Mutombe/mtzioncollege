@@ -1,9 +1,7 @@
-from django.shortcuts import render
-
 from accounts.serializers import UserProfileSerializer
-from .models import Branch, Grade, Registration, UserProfile
-from .serializers import BranchSerializer, GradeSerializer
-from rest_framework import viewsets, permissions, status
+from .models import Branch, Form, Grade, Registration, UserProfile
+from .serializers import BranchSerializer, GradeSerializer, RegistrationSerializer, AdminRegistrationActionSerializer, FormSerializer
+from rest_framework import viewsets, permissions, status, serializers, generics
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.decorators import api_view, permission_classes
@@ -11,8 +9,6 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Registration
-from .serializers import RegistrationSerializer, AdminRegistrationActionSerializer
 
 class IsAdminUser(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -39,6 +35,46 @@ class BranchViewSet(viewsets.ReadOnlyModelViewSet):
         grades = Grade.objects.filter(branch=branch)
         serializer = GradeSerializer(grades, many=True)
         return Response(serializer.data)
+    
+class GradeListCreateView(generics.ListCreateAPIView):
+    queryset = Grade.objects.all()
+    serializer_class = GradeSerializer
+
+    def get_queryset(self):
+        branch_id = self.kwargs.get("branch_id")
+        if branch_id:
+            return Grade.objects.filter(branch__id=branch_id)
+        return super().get_queryset()
+
+    def perform_create(self, serializer):
+        branch = self.kwargs.get("branch_id")
+        try:
+            # Get the Property instance
+            branch_instance = Branch.objects.get(id=branch)
+            # Save the unit with the property instance
+            serializer.save(unit_property=branch_instance)
+        except Branch.DoesNotExist:
+            raise serializers.ValidationError("Branch does not exist.")
+        
+class FormListCreateView(generics.ListCreateAPIView):
+    queryset = Form.objects.all()
+    serializer_class = FormSerializer
+
+    def get_queryset(self):
+        branch_id = self.kwargs.get("branch_id")
+        if branch_id:
+            return Form.objects.filter(branch__id=branch_id)
+        return super().get_queryset()
+
+    def perform_create(self, serializer):
+        branch = self.kwargs.get("branch_id")
+        try:
+            # Get the Property instance
+            branch_instance = Form.objects.get(id=branch)
+            # Save the unit with the property instance
+            serializer.save(unit_property=branch_instance)
+        except Form.DoesNotExist:
+            raise serializers.ValidationError("Branch does not exist.")
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated, IsAdminUser])

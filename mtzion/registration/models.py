@@ -5,6 +5,9 @@ from accounts.models import CustomUser
 class Branch(models.Model):
     name = models.CharField(max_length=100)
     location = models.CharField(max_length=200)
+    students = models.IntegerField(default=0)
+    desscription = models.TextField(null=True, blank=True)
+    image = models.ImageField(upload_to="", blank=True, null=True)
 
     def __str__(self):
         return self.name

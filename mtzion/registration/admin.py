@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Registration, Branch, UserProfile, Student, Grade
+from .models import Registration, Branch, UserProfile, Student, Grade, Form
 
 
 class AdminRegistrationOverview(admin.ModelAdmin):
@@ -36,6 +36,21 @@ class AdminBranchOverview(admin.ModelAdmin):
         "location",
     )
 
+class AdminFormOverview(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "branch",
+    )
+    search_fields = (
+        "name",
+        "branch",
+    )
+    ordering = ("name",)
+    list_filter = (
+        "name",
+        "branch",
+    )
+
 class AdminGradeOverview(admin.ModelAdmin):
     list_display = (
         "name",
@@ -63,9 +78,22 @@ class AdminUserProfileOverview(admin.ModelAdmin):
         "user",
     )
 
+class AdminUserProfileOverview(admin.ModelAdmin):
+    list_display = (
+        "user",
+    )
+    search_fields = (
+        "name",
+    )
+    ordering = ("user",)
+    list_filter = (
+        "user",
+    )
+
 
 admin.site.register(Registration, AdminRegistrationOverview)
 admin.site.register(Grade, AdminGradeOverview)
+admin.site.register(Form, AdminFormOverview)
 admin.site.register(Branch, AdminBranchOverview)
 admin.site.register(UserProfile, AdminUserProfileOverview)
 
