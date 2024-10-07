@@ -1,7 +1,4 @@
-import json
 import os
-from cryptography.x509 import load_pem_x509_certificate
-from cryptography.hazmat.backends import default_backend
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -58,18 +55,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'mtzion.urls'
 
-AUTHENTICATION_BACKENDS = [
-    'accounts.auth0_authentication.Auth0Authentication',
-    'django.contrib.auth.backends.ModelBackend',
-]
-
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        #'rest_framework.permissions.IsAuthenticated',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'accounts.auth0_authentication.Auth0Authentication',
-    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication', 
+    ],
+
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
 }
 
 CORS_ORIGIN_WHITELIST = [
@@ -97,19 +91,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mtzion.wsgi.application'
-
-
-
-JWT_AUTH = {
-    'JWT_PAYLOAD_GET_USERNAME_HANDLER':
-        'accounts.utils.jwt_get_username_from_payload_handler',
-    'JWT_DECODE_HANDLER':
-        'accounts.utils.jwt_decode_token',
-    'JWT_ALGORITHM': 'RS256',
-    'JWT_AUDIENCE': AUTH0_API_IDENTIFIER,
-    'JWT_ISSUER': f'https://{AUTH0_DOMAIN}/',
-    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
-}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
