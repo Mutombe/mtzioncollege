@@ -4,7 +4,9 @@ import axios from "axios";
 export const fetchForms = createAsyncThunk(
   "branches/fetchForms",
   async ({ branchId }) => {
-    const response = await axios.get(`http://127.0.0.1:8000/branches/${branchId}/forms/`);
+    const response = await axios.get(
+      `http://127.0.0.1:8000/branches/${branchId}/forms/`
+    );
     return response.data;
   }
 );

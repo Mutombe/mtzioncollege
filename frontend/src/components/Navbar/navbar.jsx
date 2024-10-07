@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../themeContext';
+import LoginButton from '../Authentication/Login/loginButton';
+import LogoutButton from '../Authentication/Logout/logoutButton';
+import Avatar from '@mui/material/Avatar';
+import { deepOrange } from '@mui/material/colors';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
+  const { user, isAuthenticated } = useAuth0();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,18 +27,34 @@ const Navbar = () => {
     { to: "/", label: "Home" },
     { to: "/branches", label: "Our Branches" },
     { to: "/academics", label: "Admissions" },
-    { to: "/admissions", label: "Dashboard" },
-    { to: "/contact-us", label: "Contact" },
+    { to: "/admin", label: "Dashboard" },
+    { to: "/events", label: "Events" },
+    { to: "/register", label: "Enroll" },
   ];
 
+  const GradientHeading = () => {
+    return (
+      <h1 className="text-xl md:text-3xl font-bold hover:opacity-80 transition-all duration-200 border-2 border-blue-500 rounded-full py-2 px-2">
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-blue-500" style={{
+          backgroundImage: 'linear-gradient(to right, white 50%, #93C5FD 50%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          display: 'inline-block'
+        }}>
+          MT ZION COLLEGE
+        </span>
+      </h1>
+    );
+  };
+  
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <nav className={`mt-4 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       scrolled ? 'bg-navy-900' : 'bg-navy-900 shadow-none'
     } ${theme === 'default' ? 'dark:bg-gray-700' : 'bg-gray-900'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <NavLink to="/" className="flex-shrink-0">
-            <h1 className="text-xl md:text-3xl font-bold text-light-blue-500 hover:text-light-blue-400 transition-colors duration-200">MT ZION COLLEGE</h1>
+            <GradientHeading />
           </NavLink>
           <div className="hidden md:flex items-center space-x-4">
             {navItems.map((item) => (
@@ -59,6 +80,24 @@ const Navbar = () => {
             >
               {theme === 'default' ? <Sun size={20} /> : <Moon size={20} />}
             </button>
+            {isAuthenticated ? (
+              <NavLink to="/profile">
+                <Avatar
+                  sx={{ 
+                    bgcolor: deepOrange[500],
+                    cursor: 'pointer',
+                    '&:hover': { opacity: 0.8 }
+                  }}
+                  alt={user.name}
+                  src={user.picture}
+                >
+                  {user.name ? user.name[0].toUpperCase() : 'U'}
+                </Avatar>
+              </NavLink>
+            ) : (
+              <LoginButton />
+            )}
+            {isAuthenticated && <LogoutButton />}
           </div>
           <div className="md:hidden flex items-center">
             <button
@@ -91,14 +130,26 @@ const Navbar = () => {
               className={({ isActive }) =>
                 `block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200
                 ${isActive
-                  ? 'bg-navy-700 text-white'
-                  : 'text-gray-300 hover:bg-navy-800 hover:text-white'
+                  ? 'bg-blue-500 text-white'
+                  : 'text-gray-300 hover:bg-navy-100 hover:text-white'
                 }`
               }
             >
               {item.label}
             </NavLink>
           ))}
+          {isAuthenticated ? (
+            <NavLink
+              to="/profile"
+              onClick={() => setIsOpen(false)}
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-navy-100 hover:text-white"
+            >
+              Profile
+            </NavLink>
+          ) : (
+            <LoginButton />
+          )}
+          {isAuthenticated && <LogoutButton />}
         </div>
       </motion.div>
     </nav>

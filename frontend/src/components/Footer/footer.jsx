@@ -47,7 +47,7 @@ const FooterSection = () => {
   };
 
   return (
-    <footer className="my-52 py-40 bg-gray-900 text-white lg:px-8">
+    <footer className="my-52 py-40 text-white lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           

@@ -4,7 +4,9 @@ import axios from "axios";
 export const fetchGrades = createAsyncThunk(
   "branches/fetchGrades",
   async ({ branchId }) => {
-    const response = await axios.get(`http://127.0.0.1:8000/branches/${branchId}/grades/`);
+    const response = await axios.get(
+      `http://127.0.0.1:8000/branches/${branchId}/grades/`
+    );
     return response.data;
   }
 );

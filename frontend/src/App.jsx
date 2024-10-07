@@ -11,7 +11,9 @@ import NotFoundPage from "./components/404/404";
 import { AnimatePresence } from "framer-motion";
 import ContactPage from "./components/Contact/contactUs";
 import GradesPage from "./components/Grades/grades";
+import GradeDetails from "./components/Grades/gradeDetails";
 import FormsPage from "./components/Forms/forms";
+import FormDetails from "./components/Forms/formDetails";
 
 const HomePage = lazy(() => import("./components/HomePage/homepage"));
 const BranchesPage = lazy(() => import("./components/Branches/branches"));
@@ -65,7 +67,20 @@ const ThemedApp = () => {
                   path="/branches/:branchId/forms"
                   element={<FormsPage />}
                 />
+                <Route
+                  path="/branches/:branchId/grades/:gradeId"
+                  element={<GradeDetails />}
+                />
+                <Route
+                  path="/branches/:branchId/forms/:formId"
+                  element={<FormDetails />}
+                />
+                <Route
+                  path="/branches/:branchId/forms/:formId"
+                  element={""}
+                />
                 <Route path="/branch/:branchId/forms" element={""} />
+                <Route path="/register/:type/:id" element={<BookingProcess />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Suspense>

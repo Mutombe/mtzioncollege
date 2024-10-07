@@ -23,7 +23,7 @@ const Hero = ({ scrollY, opacity }) => {
   const yPosAnim = useTransform(scrollY, [0, 500], [0, 150]);
 
   return (
-    <div className="relative h-50 flex items-center justify-center overflow-hidden rounded-b-3xl bg-gradient-to-b from-navy-900 via-navy-800 to-navy-900 md:h-80 my-12">
+    <div className="relative h-50 flex items-center justify-center overflow-hidden rounded-b-3xl bg-gradient-to-b from-navy-900 via-navy-800 to-navy-900 my-12">
       <motion.div 
         className="absolute inset-0 z-0"
         style={{ opacity }}
@@ -36,12 +36,12 @@ const Hero = ({ scrollY, opacity }) => {
         style={{ y: yPosAnim }}
       >
         <motion.h1 
-          className="text-6xl md:text-8xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-light-blue-400 to-light-blue-200"
+          className="text-6xl md:text-8xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-200"
         >
-          Mt Zion College
+          MT ZION COLLEGE
         </motion.h1>
         <motion.p 
-          className="text-2xl md:text-4xl mb-12 text-light-blue-300"
+          className="text-2xl md:text-4xl mb-12 text-blue-300"
         >
           Bringing Exellence To Children
         </motion.p>
@@ -49,8 +49,8 @@ const Hero = ({ scrollY, opacity }) => {
           <motion.button
             whileHover={{ scale: 1.2, boxShadow: "0px 0px 15px rgba(144, 202, 249, 0.5)" }}
             whileTap={{ scale: 0.95 }}
-            style={{ boxShadow: "0px 0px 15px rgba(144, 202, 249, 0.5)" }}
-            className="bg-gradient-to-r from-light-blue-500 to-light-blue-700 text-white font-bold py-4 px-8 rounded-full inline-flex items-center transition duration-300 text-lg box-shadow hover:shadow-lg"
+            
+            className="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold py-4 px-8 rounded-full inline-flex items-center transition duration-300 text-lg box-shadow hover:shadow-lg mb-12"
           >
             Begin Your Journey
             <ChevronRight className="ml-2" size={24} />
@@ -141,22 +141,22 @@ const AbstractBackground = () => {
 const Announcements = () => (
   <div className="py-20 px-4 md:px-0">
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-4xl font-bold mb-12 text-center text-light-blue-300">Latest News</h2>
+      <h2 className="text-4xl font-bold mb-12 text-center text-blue-300">LATEST NEWS</h2>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="bg-white bg-opacity-10 p-8 rounded-3xl shadow-2xl backdrop-blur-lg"
       >
-        <h3 className="text-3xl font-semibold text-light-blue-400 mb-4">Grade 1 Registration Open for 2025</h3>
+        <h3 className="text-3xl font-semibold text-blue-400 mb-4">Grade 1 Registration Open for 2025</h3>
         <p className="text-xl text-gray-300 mb-6">
-          Secure your child's future at Mt Zion College. Limited spots available for our award-winning Grade 1 program.
+          Secure your child's future at Mt Zion College. Limited spots available for our  Grade 1 Enrollment.
         </p>
         <motion.a 
-          className="inline-flex items-center text-navy-900 bg-light-blue-400 rounded-full px-8 py-3 text-lg font-semibold transition duration-300 hover:bg-light-blue-300" 
+          className="inline-flex items-center text-navy-900 bg-blue-400 rounded-full px-8 py-3 text-lg font-semibold transition duration-300 hover:bg-blue-300" 
           whileHover={{ scale: 1.1, boxShadow: "0px 0px 15px rgba(144, 202, 249, 0.5)" }} 
           whileTap={{ scale: 0.95 }} 
-          style={{ cursor: "pointer", boxShadow: "0px 0px 15px rgba(144, 202, 249, 0.5)" }}
+          style={{ cursor: "pointer" }}
           href="/branches"
         >
           Learn more <ChevronRight className="ml-2" size={20} />
@@ -172,11 +172,11 @@ const FeatureCard = ({ icon, title, description, delay }) => (
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5, delay }}
     whileHover={{ scale: 1.05, boxShadow: "0px 4px 20px rgba(144, 202, 249, 0.2)" }}
-    className="bg-navy-800 p-8 rounded-2xl shadow-lg transition duration-300 border border-light-blue-800"
+    className="bg-navy-800 p-8 rounded-2xl shadow-lg transition duration-300 border border-blue-800"
   >
     <div className="flex justify-center mb-6">
-      <div className="p-3 bg-light-blue-500 bg-opacity-20 rounded-full">
-        {React.cloneElement(icon, { size: 36, className: "text-light-blue-400" })}
+      <div className="p-3 bg-blue-500 bg-opacity-20 rounded-full">
+        {React.cloneElement(icon, { size: 36, className: "text-blue-400" })}
       </div>
     </div>
     <h3 className="text-2xl font-semibold text-light-blue-300 mb-4 text-center">{title}</h3>
@@ -187,7 +187,7 @@ const FeatureCard = ({ icon, title, description, delay }) => (
 const Features = ({ scrollY }) => (
   <div className="py-20 px-4 md:px-0 relative">
     <div className="max-w-6xl mx-auto">
-      <h2 className="text-4xl font-bold mb-16 text-center text-light-blue-300">Why Choose Mt Zion College?</h2>
+      <h2 className="text-4xl font-bold mb-16 text-center text-blue-300">WHY CHOOSE MT ZION ?</h2>
       <div className="grid md:grid-cols-3 gap-12">
         <FeatureCard
           icon={<GraduationCap />}
@@ -222,13 +222,13 @@ const Testimonials = () => {
   const testimonials = [
     { id: 1, text: "Mt Zion College transformed my child's approach to learning. The teachers here are exceptional!", author: "Sarah M., Parent" },
     { id: 2, text: "The global perspective I gained at Mt Zion prepared me for success in university and beyond.", author: "James L., Alumni" },
-    { id: 3, text: "A nurturing environment that brings out the best in every student. Truly a one-of-a-kind institution.", author: "Dr. Anita K., Education Specialist" },
+    { id: 3, text: "A nurturing environment that brings out the best in every student. Truly a one-of-a-kind institution.", author: "Tapiwa K., Education Specialist" },
   ];
 
   return (
     <div className="py-20 px-4 md:px-0 bg-navy-800">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-4xl font-bold mb-12 text-center text-light-blue-300">What Our Community Says</h2>
+        <h2 className="text-4xl font-bold mb-12 text-center text-blue-300">WHAT OUR COMMUNITY SAYS</h2>
         <div className="space-y-8">
           {testimonials.map((testimonial, index) => (
             <motion.div
@@ -239,7 +239,7 @@ const Testimonials = () => {
               className="bg-navy-700 p-6 rounded-xl shadow-lg"
             >
               <p className="text-lg text-gray-300 mb-4">"{testimonial.text}"</p>
-              <p className="text-light-blue-400 font-semibold">{testimonial.author}</p>
+              <p className="text-blue-400 font-semibold">{testimonial.author}</p>
             </motion.div>
           ))}
         </div>
@@ -251,7 +251,7 @@ const Testimonials = () => {
 const UpcomingEvents = () => (
   <div className="py-20 px-4 md:px-0">
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-4xl font-bold mb-12 text-center text-light-blue-300">Upcoming Events</h2>
+      <h2 className="text-4xl font-bold mb-12 text-center text-blue-300">UPCOMING EVENTS</h2>
       <div className="grid md:grid-cols-2 gap-8">
         <EventCard
           date="Oct 15, 2024"
@@ -271,11 +271,11 @@ const UpcomingEvents = () => (
 const EventCard = ({ date, title, description }) => (
   <motion.div
     whileHover={{ scale: 1.03, boxShadow: "0px 4px 20px rgba(144, 202, 249, 0.2)" }}
-    className="bg-navy-800 p-6 rounded-xl shadow-lg flex items-start transition duration-300 border border-light-blue-800"
+    className="bg-navy-800 p-6 rounded-xl shadow-lg flex items-start transition duration-300 border border-blue-800"
   >
-    <Calendar className="text-light-blue-400 mr-4 flex-shrink-0" size={36} />
+    <Calendar className="text-blue-400 mr-4 flex-shrink-0" size={36} />
     <div>
-      <h3 className="text-xl font-semibold text-light-blue-300 mb-2">{title}</h3>
+      <h3 className="text-xl font-semibold text-blue-300 mb-2">{title}</h3>
       <p className="text-sm text-gray-400 mb-3">{date}</p>
       <p className="text-gray-300">{description}</p>
     </div>
@@ -285,18 +285,18 @@ const EventCard = ({ date, title, description }) => (
 const ContactInfo = () => (
   <div className="py-20 px-4 md:px-0 bg-navy-800">
     <div className="max-w-4xl mx-auto text-center">
-      <h2 className="text-4xl font-bold mb-12 text-light-blue-300">Connect With Us</h2>
+      <h2 className="text-4xl font-bold mb-12 text-blue-300">CONNECT WITH US</h2>
       <div className="flex flex-col md:flex-row justify-center space-y-6 md:space-y-0 md:space-x-12">
         <motion.a 
           href="tel:+263785933900" 
-          className="flex items-center justify-center text-light-blue-400 text-xl transition duration-300 hover:text-light-blue-300"
+          className="flex items-center justify-center text-blue-400 text-xl transition duration-300 hover:text-blue-300"
           whileHover={{ scale: 1.05 }}
         >
           <Phone className="mr-3" size={24} /> +263-78-593-3900
         </motion.a>
         <motion.a 
           href="mailto:mtzioncollegeofficial@gmail.com" 
-          className="flex items-center justify-center text-light-blue-400 text-xl transition duration-300 hover:text-light-blue-300"
+          className="flex items-center justify-center text-blue-400 text-xl transition duration-300 hover:text-blue-300"
           whileHover={{ scale: 1.05 }}
         >
           <Mail className="mr-3" size={24} /> mtzioncollegeofficial@gmail.com
@@ -305,7 +305,7 @@ const ContactInfo = () => (
       <motion.button
         whileHover={{ scale: 1.05, boxShadow: "0px 0px 15px rgba(144, 202, 249, 0.5)" }}
         whileTap={{ scale: 0.95 }}
-        className="mt-12 bg-gradient-to-r from-light-blue-500 to-light-blue-700 text-white font-bold py-4 px-8 rounded-full inline-flex items-center transition duration-300 text-lg"
+        className="mt-12 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold py-4 px-8 rounded-full inline-flex items-center transition duration-300 text-lg"
       >
         Schedule a Visit
         <ChevronRight className="ml-2" size={24} />

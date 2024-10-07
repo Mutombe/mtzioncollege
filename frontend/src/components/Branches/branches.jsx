@@ -57,7 +57,7 @@ const BranchesPage = () => {
       <header className="bg-navy-900 text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold mb-2">Our Branches</h1>
-          <p className="text-xl text-light-blue-300">
+          <p className="text-xl text-blue-300">
             Discover Mt Zion College campuses across Zimbabwe
           </p>
         </div>
@@ -66,7 +66,7 @@ const BranchesPage = () => {
         <div className="flex justify-end mb-4">
           <button
             onClick={() => setViewMode(viewMode === "list" ? "map" : "list")}
-            className="flex items-center bg-light-blue-500 text-white px-4 py-2 rounded-md hover:bg-light-blue-600 transition-colors duration-300"
+            className="flex items-center bg-light-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300"
           >
             {viewMode === "list" ? (
               <Map className="mr-2" />
@@ -140,7 +140,7 @@ const BranchCard = ({ branch }) => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 bg-light-blue-500 text-white rounded-md hover:bg-light-blue-600 transition duration-300 flex items-center"
+              className="px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300 flex items-center"
             >
               <Baby size={18} className="mr-2 text-blue-400" /> Primary
             </motion.button>
@@ -150,7 +150,7 @@ const BranchCard = ({ branch }) => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 bg-light-blue-500 text-white rounded-md hover:bg-light-blue-600 transition duration-300 flex items-center"
+              className="px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-light-blue-600 transition duration-300 flex items-center"
             >
               <BookA size={18} className="mr-2 text-blue-400" /> Secondary
             </motion.button>
@@ -168,7 +168,7 @@ const BranchCard = ({ branch }) => {
         </motion.div>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center justify-center w-full py-2 bg-light-blue-500 text-white rounded-md hover:bg-light-blue-600 transition-colors duration-300"
+          className="flex items-center justify-center w-full bg-light-blue-500 text-white rounded-md hover:bg-light-blue-600 transition-colors duration-300"
         >
           {isExpanded ? (
             <>

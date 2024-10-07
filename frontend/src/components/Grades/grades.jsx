@@ -12,6 +12,10 @@ const GradesPage = () => {
   const navigate = useNavigate();
   const { branchId } = useParams();
   const { grades, loading, success, error } = useSelector((state) => state.grade);
+  const { branches, loading: branchLoading, error: branchError } = useSelector((state) => state.branch);
+
+  const currentBranch = branches.find(branch => branch.id === Number(branchId));
+  localStorage.setItem('branchId', branchId);
 
   const [viewMode, setViewMode] = useState('grid');
   const [sortBy, setSortBy] = useState('name');
@@ -36,7 +40,7 @@ const GradesPage = () => {
   };
 
   const handleGradeSelectDetail = (gradeId) => {
-    navigate(`/branches/${branchId}/grades/${gradeId}/detail`);
+    navigate(`/branches/${branchId}/grades/${gradeId}/`);
   };
 
   const sortedAndFilteredGrades = grades
@@ -52,7 +56,7 @@ const GradesPage = () => {
       <header className="bg-navy-900 text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold mb-2">Select a Grade</h1>
-          <p className="text-xl text-light-blue-300">Branch Name</p>
+          <p className="text-xl text-blue-300">{currentBranch?.name}</p>
         </div>
       </header>
       <main className="container mx-auto px-4 py-12">
@@ -116,11 +120,11 @@ export const GradeCard = ({ grade, onSelect, onSelectRegister }) => (
       <div className="flex justify-between text-gray-600 dark:text-gray-300 mb-4">
         <div className="flex items-center">
           <Users size={18} className="mr-2 text-blue-300" />
-          <span>{grade.students}50 Enrolled Students</span>
+          <span>{grade.students_count} Enrolled Students</span>
         </div>
         <div className="flex items-center">
           <BookOpen size={18} className="mr-2 text-blue-300" />
-          <span>{grade.subjects}6 Subjects</span>
+          <span>{grade.subjects && grade.subjects.length ? grade.subjects.length : 7} Subjects</span>
         </div>
       </div>
       <div className="flex justify-between text-gray-600 dark:text-gray-300 mb-4">
@@ -154,9 +158,9 @@ export const GradeListItem = ({ grade, onSelect, onSelectRegister}) => (
       </div>
       <div className="flex items-center text-gray-600 dark:text-gray-300">
         <Users size={18} className="mr-2 text-blue-400" />
-        <span>{grade.students} Students</span>
+        <span>{grade.students_count} Students</span>
         <BookOpen size={18} className="ml-4 mr-2 text-blue-400" />
-        <span>{grade.subjects} Subjects</span>
+        <span>{grade.subjects && grade.subjects.length ? grade.subjects.length : 7} Subjects</span>
         <motion.button whileHover={{ backgroundColor: '#1F2937' }} onClick={() => onSelectRegister(grade.id)} className='bg-blue-500 bg-navy-blue-500 flex items-center text-white px-1 py-1 rounded-lg ml-4'>
           <motion.div whileHover={{ scale: 1.2, backgroundColor: '#1F2937', color: 'white', marginRight: '4px' }}>
             <SmilePlus size={18} className="mr-2 text-blue-100" />
@@ -169,3 +173,5 @@ export const GradeListItem = ({ grade, onSelect, onSelectRegister}) => (
 );
 
 export default GradesPage;
+
+

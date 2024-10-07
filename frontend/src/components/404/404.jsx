@@ -40,7 +40,7 @@ const NotFoundPage = () => {
             }}
             className="mb-6"
           >
-            <GraduationCap size={80} className="text-light-blue-500" />
+            <GraduationCap size={80} className="text-blue-500" />
           </motion.div>
           <h1 className="text-4xl font-bold text-navy-600 dark:text-light-blue-400 mb-4">
             404
@@ -64,7 +64,7 @@ const NotFoundPage = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 type="submit"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-light-blue-500 text-white rounded-full p-2 hover:bg-light-blue-600 transition duration-300"
+                className="absolute right-2 top-1 bg-blue-500 text-white rounded-full p-2 hover:bg-blue-600 transition duration-300"
               >
                 <Search size={20} />
               </motion.button>
@@ -78,7 +78,7 @@ const NotFoundPage = () => {
                   whileTap={{ scale: 0.95 }}
                   className="flex items-center justify-center space-x-2 bg-navy-500 text-white p-3 rounded-md hover:bg-navy-600 transition duration-300"
                 >
-                  <item.icon size={18} />
+                  <item.icon size={18} className='text-blue-500'/>
                   <span>{item.text}</span>
                 </motion.div>
               </Link>

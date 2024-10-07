@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-//import api from "../API/axios";
 import axios from "axios";
-
 
 export const fetchBranches = createAsyncThunk(
   "branches/fetchBranches",
@@ -27,7 +25,7 @@ const branchesSlice = createSlice({
         state.success = false;
       })
       .addCase(fetchBranches.fulfilled, (state, action) => {
-        state.loading = false; 
+        state.loading = false;
         state.success = true;
         state.branches = action.payload;
         console.log("payload", action.payload);

@@ -7,12 +7,14 @@ import { Provider } from "react-redux";
 import store from "./redux/store.js";
 
 const root = createRoot(document.getElementById("root"));
+const domain = import.meta.env.VITE_AUTH0_DOMAIN;
+const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
 
 root.render(
   <Provider store={store}>
     <Auth0Provider
-      domain="dev-mgdoyd0t520ksmxi.us.auth0.com"
-      clientId="OyUd9zO0R9LJ5yud1yEpcHOjlpYgRBDV"
+      domain={domain}
+      clientId={clientId}
       authorizationParams={{
         redirect_uri: window.location.origin,
       }}
