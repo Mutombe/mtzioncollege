@@ -7,18 +7,23 @@ import {
   Button,
   TextField,
   MenuItem,
+  Alert
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import { login } from "../../../redux/authSlice";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const LoginButton = () => {
   const [openModal, setOpenModal] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { token, loading, error, success } = useSelector(
-    (state) => state.auth
+  const { loading, error} = useSelector((state) => state.auth);
+  const token = useSelector(
+    (state) => state.auth.token
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,6 +32,7 @@ const LoginButton = () => {
       if (result.meta.requestStatus === "fulfilled") {
         navigate("/");
         console.log("Login Result", result);
+        setOpenModal(false);
       }
     });
   };
@@ -47,7 +53,6 @@ const LoginButton = () => {
       )}
       <Dialog
         open={openModal}
-        onClose={setOpenModal(false)}
         fullWidth
         className=""
       >
@@ -77,24 +82,14 @@ const LoginButton = () => {
             fullWidth
             margin="normal"
             placeholder="Password"
-          ></TextField>
-          <TextField
-            label="Price Per Month"
-            name="price"
-            value={""}
-            onChange={""}
-            fullWidth
-            margin="normal"
-            type="number"
-            placeholder={property.price_per_month}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} color="secondary">
+          <Button onClick={()=>setOpenModal(false)} color="secondary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} color="primary" disabled={loading}>
-            Save Changes
+          <Button onClick={handleSubmit} color="primary" disabled={loading} className="bg-blue-800">
+            Log In
           </Button>
         </DialogActions>
       </Dialog>

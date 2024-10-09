@@ -67,8 +67,8 @@ const FormDetails = () => {
             <Link to={`/branches/${branchId}/grades`} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
               Back to Forms
             </Link>
-            <Link to={`/register/${branchId}/${formId}`} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-              Register for this Grade
+            <Link to={`/register/form/${formId}/`} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+              Register for this Form
             </Link>
           </div>
         </motion.div>

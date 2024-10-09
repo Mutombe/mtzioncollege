@@ -11,10 +11,10 @@ const FooterSection = () => {
   ];
 
   const quickLinks = [
-    { icon: <Book size={16} />, text: "About Us", link: "/about" },
-    { icon: <UserPlus size={16} />, text: "Admissions", link: "/admissions" },
+    { icon: <Book size={16} />, text: "About Us", link: "/about-us" },
+    { icon: <UserPlus size={16} />, text: "Admissions", link: "/branches" },
     { icon: <Users size={16} />, text: "Student Life", link: "/student-life" },
-    { icon: <Calendar size={16} />, text: "Events", link: "/events" }
+    { icon: <Calendar size={16} />, text: "Events", link: "/gallery" }
   ];
 
   const socialLinks = [
@@ -47,7 +47,7 @@ const FooterSection = () => {
   };
 
   return (
-    <footer className="my-52 py-40 text-white lg:px-8">
+    <footer className="text-white lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           
@@ -122,7 +122,7 @@ const FooterSection = () => {
           </motion.div>
         </div>
         <div className="mt-8 border-t border-gray-800 pt-8 text-center">
-          <p className="text-sm text-gray-400">© 2023 Mt Zion College. All rights reserved.</p>
+          <p className="text-sm text-gray-400">© 2024 Mt Zion College. All rights reserved.</p>
         </div>
       </div>
     </footer>

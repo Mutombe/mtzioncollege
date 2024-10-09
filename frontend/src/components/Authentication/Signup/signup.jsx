@@ -7,20 +7,24 @@ import {
   Button,
   TextField,
   MenuItem,
+  Alert
 } from "@mui/material";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 import { signup } from "../../../redux/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const LoginButton = () => {
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+const SignUpButton = () => {
   const [openModal, setOpenModal] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const { user, token, loading, error, success } = useSelector(
-    (state) => state.auth
+  const { loading, error} = useSelector((state) => state.auth);
+  const token  = useSelector(
+    (state) => state.auth.token
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,7 +39,7 @@ const LoginButton = () => {
     });
   };
 
-  const handleLogin = () => {
+  const handleSignUp = () => {
     setOpenModal(true);
   };
 
@@ -43,7 +47,7 @@ const LoginButton = () => {
     <>
       {!token && (
         <button
-          onClick={() => handleLogin()}
+          onClick={() => handleSignUp()}
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full"
         >
           Signup
@@ -51,7 +55,6 @@ const LoginButton = () => {
       )}
       <Dialog
         open={openModal}
-        onClose={setOpenModal(false)}
         fullWidth
         className=""
       >
@@ -64,8 +67,8 @@ const LoginButton = () => {
           )}
           <TextField
             type="email"
-            label="Username"
-            name="username"
+            label="Email"
+            name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             fullWidth
@@ -94,11 +97,11 @@ const LoginButton = () => {
           ></TextField>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} color="secondary">
+          <Button onClick={()=>setOpenModal(false)} color="secondary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} color="primary" disabled={loading}>
-            Save Changes
+          <Button onClick={handleSubmit} color="primary" style={{background: ""}} disabled={loading}>
+            Sign Up
           </Button>
         </DialogActions>
       </Dialog>
@@ -106,4 +109,4 @@ const LoginButton = () => {
   );
 };
 
-export default LoginButton;
+export default SignUpButton;

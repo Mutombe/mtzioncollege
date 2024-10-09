@@ -5,15 +5,18 @@ import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../themeContext';
 import LoginButton from '../Authentication/Login/loginButton';
 import LogoutButton from '../Authentication/Logout/logoutButton';
+import SignUpButton from '../Authentication/Signup/signup';
 import Avatar from '@mui/material/Avatar';
-import { deepOrange } from '@mui/material/colors';
-import { useAuth0 } from '@auth0/auth0-react';
-
+import { blue, deepOrange } from '@mui/material/colors';
+ import { useSelector } from 'react-redux';
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { user, isAuthenticated } = useAuth0();
+ 
+  const token = useSelector((state) => state.auth.token);
+  const user = useSelector((state) => state.auth.user);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,10 +29,10 @@ const Navbar = () => {
   const navItems = [
     { to: "/", label: "Home" },
     { to: "/branches", label: "Our Branches" },
-    { to: "/academics", label: "Admissions" },
+    { to: "/student-life", label: "Student Life" },
+    { to: "/gallery", label: "Events" },
+    { to: "/about-us", label: "About Us" },
     { to: "/admin", label: "Dashboard" },
-    { to: "/events", label: "Events" },
-    { to: "/register", label: "Enroll" },
   ];
 
   const GradientHeading = () => {
@@ -80,24 +83,27 @@ const Navbar = () => {
             >
               {theme === 'default' ? <Sun size={20} /> : <Moon size={20} />}
             </button>
-            {isAuthenticated ? (
+            {token ? (
               <NavLink to="/profile">
                 <Avatar
                   sx={{ 
-                    bgcolor: deepOrange[500],
+                    bgcolor: blue[500],
                     cursor: 'pointer',
                     '&:hover': { opacity: 0.8 }
                   }}
-                  alt={user.name}
+                  alt={user.username}
                   src={user.picture}
                 >
-                  {user.name ? user.name[0].toUpperCase() : 'U'}
+                  {user.username ? user.username[0].toUpperCase() : 'U'}
                 </Avatar>
               </NavLink>
             ) : (
-              <LoginButton />
+                <>
+                <LoginButton />
+                <SignUpButton />
+                </>    
             )}
-            {isAuthenticated && <LogoutButton />}
+            {token && <LogoutButton />}
           </div>
           <div className="md:hidden flex items-center">
             <button
@@ -138,7 +144,7 @@ const Navbar = () => {
               {item.label}
             </NavLink>
           ))}
-          {isAuthenticated ? (
+          {token ? (
             <NavLink
               to="/profile"
               onClick={() => setIsOpen(false)}
@@ -149,7 +155,7 @@ const Navbar = () => {
           ) : (
             <LoginButton />
           )}
-          {isAuthenticated && <LogoutButton />}
+          {token && <LogoutButton />}
         </div>
       </motion.div>
     </nav>

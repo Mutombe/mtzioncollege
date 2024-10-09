@@ -70,7 +70,7 @@ const GradeDetails = () => {
             <Link to={`/branches/${branchId}/grades`} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
               Back to Grades
             </Link>
-            <Link to={`/register/${branchId}/${gradeId}`} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+            <Link to={`/register/grade/${gradeId}/`} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
               Register for this Grade
             </Link>
           </div>

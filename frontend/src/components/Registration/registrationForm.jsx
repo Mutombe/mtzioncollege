@@ -1,25 +1,28 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import { Upload, Calendar, CheckCircle } from "lucide-react";
-import { createRegistration } from "../../redux/registrationSlice";
+import { useParams } from "react-router-dom";
+import { Upload, CheckCircle, FileText } from "lucide-react";
 import { registerForm } from "../../redux/registrationSlice";
-import { registerGrade } from "../../redux/registrationSlice";
-const { type, id } = useParams();
+import { registerGrade } from "../../redux/registrationSlice"; 
+import { useDropzone } from 'react-dropzone';
+import { useCallback } from "react";
 
 const RegistrationForm = () => {
+
+  const [step, setStep] = useState(1);
+  const { type, id } = useParams();
   const dispatch = useDispatch();
   const { loading, success, error } = useSelector(
     (state) => state.registration
   );
 
-  const details = useSelector((state) => state.registration.details);
+  const { grades } = useSelector((state) => state.grade);
+  const { forms, loading: form_loading, error: form_error } = useSelector((state) => state.form);
+  
 
-  useEffect(() => {
-    dispatch(fetchDetails({ id, type }));
-  }, [id, type, dispatch]);
-
-  const [step, setStep] = useState(1);
+  const currentGrade = grades.find(grade => grade.id === Number(id));
+  const currentForm = forms.find(form => form.id === Number(id));
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -27,8 +30,8 @@ const RegistrationForm = () => {
     parent_name: "",
     contact_number: "",
     email: "",
-    grade: details.grade || null,
-    form: details.form || null,
+    grade: currentGrade || null,
+    form: currentForm || null,
     previous_school: "",
     last_grade_completed: "",
     transfer_letter: null,
@@ -51,7 +54,7 @@ const RegistrationForm = () => {
     if (name === "report_card_images") {
       setFormData({
         ...formData,
-        [name]: [...formData.report_card_images, ...files],
+        [name]: [...(formData.report_card_images || []), ...files],
       });
     } else {
       setFormData({ ...formData, [name]: files[0] });
@@ -60,17 +63,39 @@ const RegistrationForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (type == "grade") {
-      dispatch(registerGrade(formData));
-    } else if (type === "forms") {
-      dispatch(registerForm(formData));
+    const formDataToSend = new FormData();
+  
+    // Append text fields
+    Object.keys(formData).forEach(key => {
+      if (typeof formData[key] === 'string') {
+        formDataToSend.append(key, formData[key]);
+      }
+    });
+  
+    // Append file fields
+    if (formData.transfer_letter) formDataToSend.append('transfer_letter', formData.transfer_letter);
+    if (formData.birth_certificate) formDataToSend.append('birth_certificate', formData.birth_certificate);
+    
+    if (formData.report_card_type === 'IMAGES') {
+      formData.report_card_images.forEach((file, index) => {
+        formDataToSend.append(`report_card_images[${index}]`, file);
+      });
+    } else if (formData.report_card_pdf) {
+      formDataToSend.append('report_card_pdf', formData.report_card_pdf);
+    }
+  
+    if (currentGrade) {
+      dispatch(registerGrade({grade_id: currentGrade.id, registrationData: formDataToSend}));
+    } else if (currentForm) {
+      dispatch(registerForm({form_id: currentForm.id, registrationData: formDataToSend}));
     }
   };
 
   return (
     <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md my-12">
       <h2 className="text-3xl font-bold text-navy-900 dark:text-white mb-6">
-        Student Registration
+       
+        <span className="text-blue-400">{currentGrade ? currentGrade?.name : currentForm?.name}</span> Registration
       </h2>
       <ProgressBar currentStep={step} />
       {step === 1 && (
@@ -134,64 +159,92 @@ const ProgressBar = ({ currentStep }) => (
   </div>
 );
 
-const PersonalInfo = ({ formData, handleInputChange, onNext }) => (
-  <motion.form
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    className="space-y-4"
-  >
-    <p className="text-lg font-bold text-navy-900 dark:text-white mb-2">
-      Personal Information
-    </p>
-    <InputField
-      label="Student Full Name"
-      type="text"
-      name="full_name"
-      value={formData.full_name}
-      onChange={handleInputChange}
-      required
-    />
-    <InputField
-      label="Student Date of Birth"
-      type="date"
-      name="date_of_birth"
-      value={formData.date_of_birth}
-      onChange={handleInputChange}
-      required
-    />
-    <InputField
-      label="Parent/Guardian Name"
-      type="text"
-      name="parent_name"
-      value={formData.parent_name}
-      onChange={handleInputChange}
-      required
-    />
-    <InputField
-      label="Parent/Guardian Number"
-      type="tel"
-      name="contact_number"
-      value={formData.contact_number}
-      onChange={handleInputChange}
-      required
-    />
-    <InputField
-      label="Parent/Guardian Email"
-      type="email"
-      name="email"
-      value={formData.email}
-      onChange={handleInputChange}
-      required
-    />
-    <button
-      onClick={onNext}
-      className="w-full bg-blue-500 hover:bg-light-blue-600 text-white font-bold py-2 px-4 rounded"
+const PersonalInfo = ({ formData, handleInputChange, onNext }) => {
+  const [errors, setErrors] = useState({});
+
+  const validateStep = () => {
+    const newErrors = {};
+    if (!formData.full_name) newErrors.full_name = "Full name is required";
+    if (!formData.date_of_birth) newErrors.date_of_birth = "Date of birth is required";
+    if (!formData.parent_name) newErrors.parent_name = "Parent/Guardian name is required";
+    if (!formData.contact_number) newErrors.contact_number = "Contact number is required";
+    if (!formData.email) newErrors.email = "Email is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  
+  const handleNext = (e) => {
+    e.preventDefault();
+    if (validateStep()) {
+      onNext();
+    }
+  };
+
+  return (
+    <motion.form
+      onSubmit={handleNext}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="space-y-4"
     >
-      Next
-    </button>
-  </motion.form>
-);
+      <p className="text-lg font-bold text-navy-900 dark:text-white mb-2">
+        Personal Information
+      </p>
+      <InputField
+        label="Student Full Name"
+        type="text"
+        name="full_name"
+        value={formData.full_name}
+        onChange={handleInputChange}
+        required
+        error={errors.full_name}
+      />
+      <InputField
+        label="Student Date of Birth"
+        type="date"
+        name="date_of_birth"
+        value={formData.date_of_birth}
+        onChange={handleInputChange}
+        required
+        error={errors.date_of_birth}
+      />
+      <InputField
+        label="Parent/Guardian Name"
+        type="text"
+        name="parent_name"
+        value={formData.parent_name}
+        onChange={handleInputChange}
+        required
+        error={errors.parent_name}
+      />
+      <InputField
+        label="Parent/Guardian Number"
+        type="tel"
+        name="contact_number"
+        value={formData.contact_number}
+        onChange={handleInputChange}
+        required
+        error={errors.contact_number}
+      />
+      <InputField
+        label="Parent/Guardian Email"
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleInputChange}
+        required
+        error={errors.email}
+      />
+      <button
+        onClick={onNext}
+        className="w-full bg-blue-500 hover:bg-light-blue-600 text-white font-bold py-2 px-4 rounded"
+      >
+        Next
+      </button>
+    </motion.form>
+  )
+};
 
 const AcademicInfo = ({ formData, handleInputChange, onNext, onPrev }) => (
   <motion.form
@@ -249,11 +302,15 @@ const DocumentUpload = ({ formData, handleFileChange, onNext, onPrev }) => (
       name="transfer_letter"
       onChange={handleFileChange}
     />
+    {formData.transfer_letter && <FileList files={formData.transfer_letter} />}
+
     <FileUpload
       label="Birth Certificate"
       name="birth_certificate"
       onChange={handleFileChange}
     />
+    {formData.birth_certificate && <FileList files={formData.birth_certificate} />}
+    
     <div>
       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
         Report Card Type
@@ -273,20 +330,26 @@ const DocumentUpload = ({ formData, handleFileChange, onNext, onPrev }) => (
       </select>
     </div>
     {formData.report_card_type === "IMAGES" ? (
-      <FileUpload
-        label="Report Card Images"
-        name="report_card_images"
-        multiple
-        onChange={handleFileChange}
-      />
-    ) : (
-      <FileUpload
-        label="Report Card PDF"
-        name="report_card_pdf"
-        accept=".pdf"
-        onChange={handleFileChange}
-      />
-    )}
+        <>
+          <FileUpload
+            label="Report Card Images"
+            name="report_card_images"
+            multiple
+            onChange={handleFileChange}
+          />
+          {formData.report_card_images.length > 0 && <FileList files={formData.report_card_images} />}
+        </>
+      ) : (
+        <>
+          <FileUpload
+            label="Report Card PDF"
+            name="report_card_pdf"
+            accept=".pdf"
+            onChange={handleFileChange}
+          />
+          {formData.report_card_pdf && <FileList files={formData.report_card_pdf} />}
+        </>
+      )}
     <div className="flex justify-between">
       <button
         onClick={onPrev}
@@ -351,9 +414,6 @@ const Confirmation = ({
             <strong>Email:</strong> {formData.email}
           </p>
           <p>
-            <strong>Grade Applying For:</strong> {formData.grade}
-          </p>
-          <p>
             <strong>Previous School:</strong>{" "}
             {formData.previous_school || "N/A"}
           </p>
@@ -376,12 +436,11 @@ const Confirmation = ({
           </button>
           <button
             onClick={onSubmit}
-            disabled={loading}
             className={`bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded ${
               loading ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
-            {loading ? "Submitting..." : "Submit Application"}
+            {loading ? "Submitting..." : "Submit Request"}
           </button>
         </div>
       </>
@@ -389,7 +448,7 @@ const Confirmation = ({
   </motion.div>
 );
 
-const InputField = ({ label, type, name, value, onChange, required }) => (
+const InputField = ({ label, type, name, value, onChange, required, error }) => (
   <div>
     <label
       htmlFor={name}
@@ -407,6 +466,7 @@ const InputField = ({ label, type, name, value, onChange, required }) => (
       required={required}
       className="text-black w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
     />
+    {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
   </div>
 );
 
@@ -443,39 +503,43 @@ const SelectField = ({ label, name, value, onChange, options, required }) => (
   </div>
 );
 
-const FileUpload = ({ label, name, onChange, multiple, accept }) => (
-  <div>
-    <label
-      htmlFor={name}
-      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-    >
-      {label}
-    </label>
-    <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-      <div className="space-y-1 text-center">
-        <Upload className="mx-auto h-12 w-12 text-gray-400" />
-        <div className="flex text-sm text-gray-600">
-          <label
-            htmlFor={name}
-            className="relative cursor-pointer bg-white rounded-md font-medium text-light-blue-600 hover:text-light-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-light-blue-500"
-          >
-            <span>Upload a file</span>
-            <input
-              id={name}
-              name={name}
-              type="file"
-              onChange={onChange}
-              multiple={multiple}
-              accept={accept}
-              className="sr-only"
-            />
-          </label>
-          <p className="pl-1">or drag and drop</p>
+
+
+const FileUpload = ({ label, name, onChange, multiple, accept }) => {
+  const onDrop = useCallback((acceptedFiles) => {
+    onChange({ target: { name, files: acceptedFiles } });
+  }, [onChange, name]);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, multiple, accept });
+
+  return (
+    <div>
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        {label}
+      </label>
+      <div {...getRootProps()} className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md ${isDragActive ? 'bg-blue-50' : ''}`}>
+        <div className="space-y-1 text-center">
+          <Upload className="mx-auto h-12 w-12 text-gray-400" />
+          <div className="flex text-sm text-gray-600">
+            <input {...getInputProps()} />
+            <p>{isDragActive ? "Drop the files here" : "Drag 'n' drop some files here, or click to select files"}</p>
+          </div>
+          <p className="text-xs text-gray-500">PNG, JPG, PDF up to 10MB</p>
         </div>
-        <p className="text-xs text-gray-500">PNG, JPG, PDF up to 10MB</p>
       </div>
     </div>
-  </div>
+  );
+};
+
+const FileList = ({ files }) => (
+  <ul className="mt-2 divide-y divide-gray-200">
+    {files.map((file, index) => (
+      <li key={index} className="py-2 flex items-center">
+        <FileText className="h-5 w-5 text-gray-400 mr-2" />
+        <span className="text-sm text-gray-500">{file.name}</span>
+      </li>
+    ))}
+  </ul>
 );
 
 export default RegistrationForm;

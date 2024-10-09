@@ -1,15 +1,27 @@
 import { logout } from "../../../redux/authSlice";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const LogoutButton = () => {
-  const { token, loading, error, success } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
+  const token = useSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout()).then(() => {
+      navigate("/");
+    });
+  };
 
   return (
     <>
       {token && (
         <button
-          onClick={() => logout()}
+          onClick={handleLogout}
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full"
         >
-          {loading ? "Loading..." : "Logout"}
+          Logout
         </button>
       )}
     </>

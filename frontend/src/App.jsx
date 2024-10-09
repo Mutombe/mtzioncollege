@@ -14,6 +14,10 @@ import GradesPage from "./components/Grades/grades";
 import GradeDetails from "./components/Grades/gradeDetails";
 import FormsPage from "./components/Forms/forms";
 import FormDetails from "./components/Forms/formDetails";
+import ProfilePage from "./components/Navbar/profile";
+import MemoryGallery from "./components/Homepage/gallery";
+import StudentLifePage from "./components/Student/studentLife";
+import AboutUsPage from "./components/Contact/aboutUs";
 
 const HomePage = lazy(() => import("./components/HomePage/homepage"));
 const BranchesPage = lazy(() => import("./components/Branches/branches"));
@@ -55,10 +59,12 @@ const ThemedApp = () => {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/branches" element={<BranchesPage />} />
-                <Route path="/register" element={<RegistrationForm />} />
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/student" element={<StudentDashboard />} />
+                <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/contact-us" element={<ContactPage />} />
+                <Route path="/about-us" element={<AboutUsPage />} />
+                <Route path="/student-life" element={<StudentLifePage />} />
                 <Route
                   path="/branches/:branchId/grades"
                   element={<GradesPage />}
@@ -80,7 +86,8 @@ const ThemedApp = () => {
                   element={""}
                 />
                 <Route path="/branch/:branchId/forms" element={""} />
-                <Route path="/register/:type/:id" element={<BookingProcess />} />
+                <Route path="/register/:type/:id" element={<RegistrationForm />} />
+                <Route path="/gallery" element={<MemoryGallery />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Suspense>

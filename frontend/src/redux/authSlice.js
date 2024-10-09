@@ -1,9 +1,9 @@
-import authAxios from "./authAxios";
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import api from "../API/axios";
 
 export const signupApi = (username, email, password) => {
-  return axios.post("/register", {
+  return axios.post("http://127.0.0.1:8000/signup", {
     username: username,
     email: email,
     password: password,
@@ -11,18 +11,25 @@ export const signupApi = (username, email, password) => {
 };
 
 export const loginApi = (username, password) => {
-  return axios.post("/login", { username: username, password: password });
+  return axios.post("http://127.0.0.1:8000/login", { username: username, password: password });
 };
 
 export const logoutApi = () => {
-  return axios.post("/logout");
+  return axios.post("http://127.0.0.1:8000/logout");
 };
 
-export const fetchUser = () => {
-  const response = api.get("/user");
-  console.log(response);
-  return response;
-};
+export const fetchUser = createAsyncThunk(
+  "auth/fetchUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = api.get("/user");
+      console.log(response);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const login = createAsyncThunk(
   "auth/login",
@@ -71,6 +78,7 @@ const authSlice = createSlice({
   initialState: {
     user: JSON.parse(localStorage.getItem("user")) || null,
     token: localStorage.getItem("token") || null,
+    current_user: [],
     error: null,
     loading: false,
   },
@@ -111,6 +119,17 @@ const authSlice = createSlice({
           action.payload.email ||
           action.payload.username ||
           action.payload.password;
+      })
+      .addCase(fetchUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.loading = true;
+        state.current_user = action.payload;
+      })
+      .addCase(fetchUser.rejected, (state) => {
+        state.loading = false;
+        state.error = action.payload
       })
       .addCase(logout.fulfilled, (state) => {
         state.token = null;

@@ -45,7 +45,7 @@ const Hero = ({ scrollY, opacity }) => {
         >
           Bringing Exellence To Children
         </motion.p>
-        <Link to="/apply">
+        <Link to="/branches">
           <motion.button
             whileHover={{ scale: 1.2, boxShadow: "0px 0px 15px rgba(144, 202, 249, 0.5)" }}
             whileTap={{ scale: 0.95 }}

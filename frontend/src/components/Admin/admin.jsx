@@ -2,10 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, FileText, CreditCard, CheckCircle, XCircle, AlertCircle, Menu, X, Moon, Sun, ChevronRight, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchRegistrations } from '../../redux/registrationSlice';
+import { fetchUser } from '../../redux/authSlice';
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('registrations');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const dispatch = useDispatch();
+
+  const current_user = useSelector(
+    (state) => state.auth.current_user
+  );
+
+console.log("current user",current_user)
+
+  useEffect(() => {
+    dispatch(fetchUser());
+}, [dispatch]);
 
   const tabs = [
     { id: 'registrations', label: 'Registrations', icon: Users },
@@ -17,9 +30,8 @@ const AdminDashboard = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
-
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen my-12">
       <div className="bg-gradient-to-b from-navy-900 via-navy-800 to-navy-900 min-h-screen text-white transition-colors duration-300">
         <header className="bg-navy-900 text-white py-6 px-4">
           <div className="container mx-auto flex justify-between items-center">
@@ -32,7 +44,7 @@ const AdminDashboard = () => {
                 onClick={toggleTheme}
                 className="p-2 rounded-full hover:bg-navy-800 transition-colors duration-200"
               >
-                hhh
+                Dashboard
               </button>
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -221,7 +233,21 @@ const PaymentRow = ({ name, amount, date, status }) => (
   </motion.tr>
 );
 
-const RegistrationsTab = () => (
+const RegistrationsTab = () => {
+
+  const dispatch = useDispatch();
+
+  const { registrations, loading, success, error } = useSelector(
+    (state) => state.registration
+  );
+
+  console.log("registrations", registrations)
+
+  useEffect(() => {
+      dispatch(fetchRegistrations());
+  }, [dispatch]);
+
+return (
   <div className="bg-navy-800 rounded-lg shadow-md p-6">
     <h2 className="text-2xl font-bold mb-6 text-blue-300">Registration Requests</h2>
     <div className="mb-4 flex justify-between items-center">
@@ -229,11 +255,11 @@ const RegistrationsTab = () => (
         <input
           type="text"
           placeholder="Search registrations..."
-          className="pl-10 pr-4 py-2 rounded-full bg-navy-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="pl-10 pr-4 py-2 rounded-full bg-navy-700 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <Search className="absolute left-3 top-2 text-gray-400" size={20} />
       </div>
-      <Link to="/new-registration">
+      <Link to="/branches">
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -255,20 +281,23 @@ const RegistrationsTab = () => (
           </tr>
         </thead>
         <tbody>
+        {registrations.map((reg) =>
           <RegistrationRow
-            name="Alice Johnson"
-            grade="Grade 1"
-            branch="Main Campus"
-            status="Pending"
+            name={reg.full_name}
+            grade={reg.grade || reg.form}
+            branch={reg.branch}
+            status={reg.student.is_superuser ? "True" : "False"}
           />
+        )}
+
           <RegistrationRow
-            name="Bob Smith"
+            name="Bob Samangwe"
             grade="Grade 3"
             branch="North Campus"
             status="Approved"
           />
           <RegistrationRow
-            name="Charlie Brown"
+            name="Charlie Masuka"
             grade="Grade 2"
             branch="West Campus"
             status="Rejected"
@@ -276,8 +305,9 @@ const RegistrationsTab = () => (
         </tbody>
       </table>
     </div>
-  </div>
-);
+    </div>
+  )
+};
 
 const DocumentsTab = () => (
   <div className="bg-navy-800 rounded-lg shadow-md p-6">
