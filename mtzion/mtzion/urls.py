@@ -13,7 +13,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('', include('accounts.urls')),
-    #path('accounts', include("accounts.urls")),
     path('registration', include("registration.urls")),
     path('branches/<int:branch_id>/grades/', GradeListCreateView.as_view(), name='grades'),
     path('branches/<int:branch_id>/forms/', FormListCreateView.as_view(), name='forms'),

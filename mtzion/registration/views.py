@@ -65,6 +65,7 @@ class GradeListCreateView(generics.ListCreateAPIView):
             raise serializers.ValidationError("Branch does not exist.")
         
 class FormListCreateView(generics.ListCreateAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = Form.objects.all()
     serializer_class = FormSerializer
 
@@ -171,20 +172,24 @@ class RegistrationViewSet(viewsets.ModelViewSet):
     serializer_class = RegistrationSerializer
     parser_classes = (MultiPartParser, FormParser)
 
-    #def get_permissions(self):
-        #if self.action in ['update', 'partial_update', 'admin_action']:
-            #return [IsAdminUser()]
-        #return [permissions.IsAuthenticated()]
+    def get_permissions(self):
+        if self.action in ['update', 'partial_update', 'admin_action']:
+            return [IsAdminUser()]
+        return [permissions.IsAuthenticated()]
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save(student=self.request.user)
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_admin:
-            return Registration.objects.all()
-        return Registration.objects.filter(user=user)
-
+        print(f"User: {user}, Is superuser: {user.is_superuser}")
+        if user.is_superuser:
+            queryset = Registration.objects.all()
+            print(f"Superuser queryset count: {queryset.count()}")
+            return queryset
+        queryset = Registration.objects.filter(student=user)
+        print(f"Regular user queryset count: {queryset.count()}")
+        return queryset
     @action(detail=False, methods=['post'])
     def register(self, request):
         serializer = self.get_serializer(data=request.data)

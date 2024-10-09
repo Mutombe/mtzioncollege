@@ -56,6 +56,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             "parent_name",
             "contact_number",
             "email",
+            "status",
             "previous_school",
             "last_grade_completed",
             "transfer_letter",
@@ -86,5 +87,3 @@ class AdminRegistrationActionSerializer(serializers.Serializer):
         if value not in ['approve', 'deny']:
             raise serializers.ValidationError("Action must be either 'approve' or 'deny'.")
         return value
-
-
