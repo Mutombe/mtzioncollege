@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-k=)gkh5mdzm+8dkods10z3dqb4l)22sd5jq57d5%f-^#p^eqs_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Auth0 settings
@@ -62,7 +62,7 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        #'rest_framework.permissions.IsAuthenticated',
     ]
 }
 
@@ -71,8 +71,25 @@ CORS_ORIGIN_WHITELIST = [
      'http://localhost:5173',
 ]
 
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'OPTIONS'
+]
+
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+    'x-csrftoken',
+    'accept'
+]
+
 CORS_ALLOW_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 TEMPLATES = [
     {
@@ -97,8 +114,12 @@ WSGI_APPLICATION = 'mtzion.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'bwmxzub06lhzbhcjmxsk',
+        'USER': 'uxv1mfri6uq7cbimcmdp',
+        'PASSWORD': 'KXHnEEC6xg8ug7ioifwa7HYienfhSP',
+        'HOST': 'bwmxzub06lhzbhcjmxsk-postgresql.services.clever-cloud.com',
+        'PORT': '50013',
     }
 }
 

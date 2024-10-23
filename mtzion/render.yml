@@ -1,0 +1,11 @@
+services:
+  - type: web
+    plan: free
+    name: mtzion
+    runtime: python
+    buildCommand: "./mtzion/build.sh"
+    startCommand: "cd mtzion && gunicorn backend.asgi:application -w 4 -k uvicorn.workers.UvicornWorker"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: mtzion.settings
+    staticPublishPath: ./mtzion/static
