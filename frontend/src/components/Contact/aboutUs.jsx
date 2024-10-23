@@ -66,7 +66,7 @@ const History = () => (
         className="bg-navy-700 p-8 rounded-xl shadow-lg"
       >
         <p className="text-lg mb-4">
-          Founded in 1980, Mt Zion College has a rich history of academic excellence and community engagement. What started as a small school with just 50 students has grown into a network of campuses across Zimbabwe, each dedicated to nurturing the potential of every student.
+          Founded in 2010, Mt Zion College has a rich history of academic excellence and community engagement. What started as a small school with just 50 students has grown into a network of campuses across Zimbabwe, each dedicated to nurturing the potential of every student.
         </p>
         <p className="text-lg">
           Over the years, we've continuously evolved our curriculum and facilities to meet the changing needs of our students and the world they'll inherit. Today, we're proud to be at the forefront of educational innovation in Zimbabwe.
@@ -111,9 +111,9 @@ const Leadership = () => (
       <h2 className="text-4xl font-bold mb-12 text-center text-blue-300">Our Leadership</h2>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {[
-          { name: "Dr. Sarah Moyo", title: "Principal", image: "/api/placeholder/300/300" },
-          { name: "Mr. John Ndlovu", title: "Vice Principal", image: "/api/placeholder/300/300" },
-          { name: "Mrs. Grace Mutasa", title: "Head of Academics", image: "/api/placeholder/300/300" },
+          { name: "Dr. Tindo Moyo", title: "Head-Master", image: "images/teacher.png" },
+          { name: "Mr. John Tendai", title: "Depute", image: "images/teacher.png" },
+          { name: "Mr Majoni", title: "Head of Academics", image: "images/t2.jpg" },
         ].map((leader, index) => (
           <motion.div
             key={index}

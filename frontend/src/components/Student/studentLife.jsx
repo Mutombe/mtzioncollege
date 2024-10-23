@@ -91,12 +91,12 @@ const Facilities = () => (
       <h2 className="text-4xl font-bold mb-12 text-center text-blue-300">Our Facilities</h2>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {[
-          { title: "Modern Libraries", image: "/api/placeholder/400/300" },
-          { title: "Science Labs", image: "/api/placeholder/400/300" },
-          { title: "Sports Complexes", image: "/api/placeholder/400/300" },
-          { title: "Art Studios", image: "/api/placeholder/400/300" },
-          { title: "Computer Labs", image: "/api/placeholder/400/300" },
-          { title: "Student Lounges", image: "/api/placeholder/400/300" },
+          { title: "Modern Libraries", image: "/images/libra.jpg" },
+          { title: "Science Labs", image: "images/lab.jpg" },
+          { title: "Sports Complexes", image: "images/sports.jfif" },
+          { title: "Art Studios", image: "images/art.jpg" },
+          { title: "Computer Labs", image: "images/clab.jpg" },
+          { title: "Student Lounges", image: "images/lounge.jpg" },
         ].map((facility, index) => (
           <motion.div
             key={index}
@@ -122,8 +122,8 @@ const StudentStories = () => (
         <h2 className="text-4xl font-bold mb-12 text-center text-blue-300">Student Stories</h2>
         <div className="grid md:grid-cols-2 gap-8">
           {[
-            { name: "Tendai Moyo", quote: "Mt Zion has given me the confidence to pursue my dreams in science.", image: "/api/placeholder/300/300" },
-            { name: "Chipo Ngwenya", quote: "The diverse community at Mt Zion has broadened my worldview.", image: "/api/placeholder/300/300" },
+            { name: "Tendai Moyo", quote: "Mt Zion has given me the confidence to pursue my dreams in science.", image: "images/logo.png" },
+            { name: "Chipo Ngwenya", quote: "The diverse community at Mt Zion has broadened my worldview.", image: "images/logo.png" },
           ].map((student, index) => (
             <motion.div
               key={index}

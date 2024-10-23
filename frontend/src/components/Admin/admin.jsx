@@ -1,434 +1,414 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, FileText, CreditCard, CheckCircle, XCircle, AlertCircle, Menu, X, Moon, Sun, ChevronRight, Search } from 'lucide-react';
+import {
+  Users,
+  FileText,
+  Menu,
+  X,
+  ChevronRight,
+  Search,
+  Download,
+  Eye,
+  CheckCircle,
+  XCircle,
+  Filter,
+  AlertCircle
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchRegistrations } from '../../redux/registrationSlice';
 import { fetchUser } from '../../redux/authSlice';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+  Menu as MuiMenu,
+  MenuItem,
+  IconButton,
+  Tooltip,
+  CircularProgress
+} from '@mui/material';
+
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('registrations');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState(null);
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [filterAnchorEl, setFilterAnchorEl] = useState(null);
   const dispatch = useDispatch();
 
-  const current_user = useSelector(
-    (state) => state.auth.current_user
-  );
-
-console.log("current user",current_user)
+  const { registrations, loading } = useSelector((state) => state.registration);
+  const current_user = useSelector((state) => state.auth.current_user);
 
   useEffect(() => {
     dispatch(fetchUser());
-}, [dispatch]);
+    dispatch(fetchRegistrations());
+  }, [dispatch]);
 
   const tabs = [
-    { id: 'registrations', label: 'Registrations', icon: Users },
-    { id: 'documents', label: 'Documents', icon: FileText },
-    { id: 'payments', label: 'Payments', icon: CreditCard },
+    { id: 'registrations', label: 'Registration Requests', icon: Users },
+    { id: 'documents', label: 'Document Verification', icon: FileText },
   ];
 
-  const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { 
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100 }
+    }
   };
 
   return (
-    <div className="min-h-screen my-12">
-      <div className="bg-gradient-to-b from-navy-900 via-navy-800 to-navy-900 min-h-screen text-white transition-colors duration-300">
-        <header className="bg-navy-900 text-white py-6 px-4">
-          <div className="container mx-auto flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-200">Admin Dashboard</h1>
-              <p className="text-blue-300 mt-2">Welcome back, Admin!</p>
+    <div className="min-h-screen bg-">
+      {/* Header */}
+      <header className=" shadow-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <IconButton
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="lg:hidden"
+              >
+                <Menu className="text-blue-200" />
+              </IconButton>
+              <h1 className="ml-4 text-2xl font-bold text-blue-200">
+                School Admin Portal
+              </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-full hover:bg-navy-800 transition-colors duration-200"
-              >
-                Dashboard
-              </button>
-              <button
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="p-2 rounded-full hover:bg-navy-800 transition-colors duration-200 md:hidden"
-              >
-                <Menu size={24} />
-              </button>
+              <span className="text-sm text-gray-600">
+                Welcome, {current_user?.name || 'Admin'}
+              </span>
             </div>
           </div>
-        </header>
+        </div>
+      </header>
 
-        <div className="flex">
-          {/* Sidebar for mobile */}
-          <AnimatePresence>
-            {isSidebarOpen && (
-              <motion.div
-                initial={{ x: '-100%' }}
-                animate={{ x: 0 }}
-                exit={{ x: '-100%' }}
-                transition={{ type: 'tween' }}
-                className="fixed inset-y-0 left-0 z-50 w-64 bg-navy-800 shadow-lg md:hidden"
-              >
-                <div className="p-4 flex justify-between items-center">
-                  <h2 className="text-xl font-bold text-blue-300">Menu</h2>
-                  <button onClick={() => setIsSidebarOpen(false)}>
-                    <X size={24} className="text-gray-400" />
-                  </button>
-                </div>
-                <nav>
-                  <ul className="space-y-2">
-                    {tabs.map((tab) => (
-                      <li key={tab.id}>
-                        <button
-                          onClick={() => {
-                            setActiveTab(tab.id);
-                            setIsSidebarOpen(false);
-                          }}
-                          className={`flex items-center space-x-2 w-full p-4 transition-colors ${
-                            activeTab === tab.id
-                              ? 'bg-blue-500 text-white'
-                              : 'text-gray-300 hover:bg-navy-700'
-                          }`}
-                        >
-                          <tab.icon size={20} />
-                          <span>{tab.label}</span>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Sidebar for desktop */}
-          <nav className="hidden md:block w-64 bg-navy-800 shadow-lg">
-            <ul className="space-y-2 p-4">
-              {tabs.map((tab) => (
-                <li key={tab.id}>
-                  <button
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center space-x-2 w-full p-4 rounded-lg transition-colors ${
+      <div className="flex">
+        {/* Sidebar */}
+        <AnimatePresence>
+          {(isSidebarOpen || !window.matchMedia('(max-width: 1024px)').matches) && (
+            <motion.aside
+              initial={{ x: -300 }}
+              animate={{ x: 0 }}
+              exit={{ x: -300 }}
+              className="fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white shadow-lg overflow-y-auto"
+            >
+              <nav className="p-4 space-y-2">
+                {tabs.map((tab) => (
+                  <motion.button
+                    key={tab.id}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      setActiveTab(tab.id);
+                      setIsSidebarOpen(false);
+                    }}
+                    className={`flex items-center w-full p-3 rounded-lg transition-colors ${
                       activeTab === tab.id
                         ? 'bg-blue-500 text-white'
-                        : 'text-gray-300 hover:bg-navy-700'
+                        : 'text-gray-600 hover:bg-gray-100'
                     }`}
                   >
-                    <tab.icon size={20} />
+                    <tab.icon size={20} className="mr-3" />
                     <span>{tab.label}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
+                  </motion.button>
+                ))}
+              </nav>
+            </motion.aside>
+          )}
+        </AnimatePresence>
 
-          <main className="flex-1 p-4 md:p-8">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                {activeTab === 'registrations' && <RegistrationsTab />}
-                {activeTab === 'documents' && <DocumentsTab />}
-                {activeTab === 'payments' && <PaymentsTab />}
-              </motion.div>
-            </AnimatePresence>
-          </main>
+        {/* Main Content */}
+        <main className="flex-1 p-4 lg:p-8">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial="hidden"
+              animate="visible"
+              variants={containerVariants}
+            >
+              {activeTab === 'registrations' && (
+                <RegistrationsPanel 
+                  registrations={registrations}
+                  loading={loading}
+                  setSelectedRequest={setSelectedRequest}
+                  filterStatus={filterStatus}
+                  setFilterStatus={setFilterStatus}
+                  filterAnchorEl={filterAnchorEl}
+                  setFilterAnchorEl={setFilterAnchorEl}
+                  itemVariants={itemVariants}
+                />
+              )}
+              {activeTab === 'documents' && (
+                <DocumentsPanel 
+                  registrations={registrations}
+                  itemVariants={itemVariants}
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </main>
+      </div>
+
+      {/* Request Details Dialog */}
+      <RequestDetailsDialog
+        request={selectedRequest}
+        onClose={() => setSelectedRequest(null)}
+      />
+    </div>
+  );
+};
+
+const StatusBadge = ({ status }) => {
+  const getStatusColor = () => {
+    switch (status.toLowerCase()) {
+      case 'approved':
+        return 'bg-green-100 text-green-800';
+      case 'rejected':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-yellow-100 text-yellow-800';
+    }
+  };
+
+  return (
+    <span className={`px-2 py-1 rounded-full text-sm font-medium ${getStatusColor()}`}>
+      {status}
+    </span>
+  );
+};
+
+const RegistrationsPanel = ({ 
+  registrations, 
+  loading, 
+  setSelectedRequest, 
+  filterStatus, 
+  setFilterStatus,
+  filterAnchorEl,
+  setFilterAnchorEl,
+  itemVariants 
+}) => {
+  const filteredRegistrations = registrations.filter(reg => 
+    filterStatus === 'all' || reg.status === filterStatus
+  );
+
+  return (
+    <motion.div 
+      className="bg-white rounded-lg shadow-lg p-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+    >
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Registration Requests</h2>
+        <div className="flex space-x-4">
+          <TextField
+            size="small"
+            placeholder="Search requests..."
+            InputProps={{
+              startAdornment: <Search className="text-gray-400 mr-2" size={20} />
+            }}
+          />
+          <Button
+            variant="outlined"
+            startIcon={<Filter />}
+            onClick={(e) => setFilterAnchorEl(e.currentTarget)}
+          >
+            Filter
+          </Button>
+          <MuiMenu
+            anchorEl={filterAnchorEl}
+            open={Boolean(filterAnchorEl)}
+            onClose={() => setFilterAnchorEl(null)}
+          >
+            <MenuItem onClick={() => setFilterStatus('all')}>All Requests</MenuItem>
+            <MenuItem onClick={() => setFilterStatus('pending')}>Pending</MenuItem>
+            <MenuItem onClick={() => setFilterStatus('approved')}>Approved</MenuItem>
+            <MenuItem onClick={() => setFilterStatus('rejected')}>Rejected</MenuItem>
+          </MuiMenu>
         </div>
       </div>
-    </div>
+
+      {loading ? (
+        <div className="flex justify-center py-8">
+          <CircularProgress />
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {filteredRegistrations.map((registration) => (
+            <motion.div
+              key={registration.id}
+              variants={itemVariants}
+              className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow"
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {registration.full_name}
+                  </h3>
+                  <div className="mt-1 space-x-2">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                      Grade {registration.grade}
+                    </span>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                      {registration.branch}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  <Tooltip title="View Details">
+                    <IconButton onClick={() => setSelectedRequest(registration)}>
+                      <Eye className="text-blue-500" size={20} />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Approve">
+                    <IconButton color="success">
+                      <CheckCircle size={20} />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Reject">
+                    <IconButton color="error">
+                      <XCircle size={20} />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
+    </motion.div>
   );
 };
 
-const DashboardCard = ({ title, value, icon: Icon, color }) => (
-  <motion.div
-    whileHover={{ scale: 1.05 }}
-    className="bg-white dark:bg-navy-700 rounded-lg shadow-md p-6"
-  >
-    <div className="flex items-center justify-between">
-      <div>
-        <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">{title}</h3>
-        <p className={`text-2xl font-bold ${color}`}>{value}</p>
-      </div>
-      <Icon size={32} className={color} />
-    </div>
-  </motion.div>
-);
-
-const DocumentItem = ({ name, status, icon: Icon, color }) => (
-  <motion.li
-    whileHover={{ scale: 1.02 }}
-    className="flex items-center justify-between p-4 bg-navy-700 rounded-lg"
-  >
-    <span className="font-medium text-gray-200">{name}</span>
-    <div className="flex items-center space-x-2">
-      <span className={`${color} font-medium`}>{status}</span>
-      <Icon size={20} className={color} />
-    </div>
-  </motion.li>
-);
-
-const RegistrationRow = ({ name, grade, branch, status }) => (
-  <motion.tr
-    whileHover={{ scale: 1.02 }}
-    className="border-b border-navy-600"
-  >
-    <td className="py-3 px-2">{name}</td>
-    <td className="py-3 px-2">{grade}</td>
-    <td className="py-3 px-2">{branch}</td>
-    <td className="py-3 px-2">
-      <span
-        className={`px-2 py-1 rounded-full text-sm font-medium ${
-          status === 'Approved'
-            ? 'bg-green-100 text-green-800'
-            : status === 'Rejected'
-            ? 'bg-red-100 text-red-800'
-            : 'bg-yellow-100 text-yellow-800'
-        }`}
-      >
-        {status}
-      </span>
-    </td>
-    <td className="py-3 px-2">
-      <div className="flex space-x-2">
-        <motion.button
-          whileHover={{ scale: 1.2 }}
-          className="p-1 text-green-500 hover:text-green-600"
-        >
-          <CheckCircle size={20} />
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.2 }}
-          className="p-1 text-red-500 hover:text-red-600"
-        >
-          <XCircle size={20} />
-        </motion.button>
-      </div>
-    </td>
-  </motion.tr>
-);
-
-const PaymentRow = ({ name, amount, date, status }) => (
-  <motion.tr
-    whileHover={{ scale: 1.02 }}
-    className="border-b border-navy-600"
-  >
-    <td className="py-3 px-2">{name}</td>
-    <td className="py-3 px-2">{amount}</td>
-    <td className="py-3 px-2">{date}</td>
-    <td className="py-3 px-2">
-      <span
-        className={`px-2 py-1 rounded-full text-sm font-medium ${
-          status === 'Paid'
-            ? 'bg-green-100 text-green-800'
-            : status === 'Pending'
-            ? 'bg-yellow-100 text-yellow-800'
-            : 'bg-red-100 text-red-800'
-        }`}
-      >
-        {status}
-      </span>
-    </td>
-  </motion.tr>
-);
-
-const RegistrationsTab = () => {
-
-  const dispatch = useDispatch();
-
-  const { registrations, loading, success, error } = useSelector(
-    (state) => state.registration
-  );
-
-  console.log("registrations", registrations)
-
-  useEffect(() => {
-      dispatch(fetchRegistrations());
-  }, [dispatch]);
-
-return (
-  <div className="bg-navy-800 rounded-lg shadow-md p-6">
-    <h2 className="text-2xl font-bold mb-6 text-blue-300">Registration Requests</h2>
-    <div className="mb-4 flex justify-between items-center">
-      <div className="relative">
-        <input
-          type="text"
-          placeholder="Search registrations..."
-          className="pl-10 pr-4 py-2 rounded-full bg-navy-700 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <Search className="absolute left-3 top-2 text-gray-400" size={20} />
-      </div>
-      <Link to="/branches">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-blue-500 text-white px-4 py-2 rounded-full flex items-center"
-        >
-          New Registration <ChevronRight size={20} className="ml-2" />
-        </motion.button>
-      </Link>
-    </div>
-    <div className="overflow-x-auto">
-      <table className="w-full">
-        <thead>
-          <tr className="text-left border-b border-navy-600">
-            <th className="py-3 px-2 text-blue-300">Student Name</th>
-            <th className="py-3 px-2 text-blue-300">Grade</th>
-            <th className="py-3 px-2 text-blue-300">Branch</th>
-            <th className="py-3 px-2 text-blue-300">Status</th>
-            <th className="py-3 px-2 text-blue-300">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-        {registrations.map((reg) =>
-          <RegistrationRow
-            name={reg.full_name}
-            grade={reg.grade || reg.form}
-            branch={reg.branch}
-            status={reg.student.is_superuser ? "True" : "False"}
-          />
-        )}
-
-          <RegistrationRow
-            name="Bob Samangwe"
-            grade="Grade 3"
-            branch="North Campus"
-            status="Approved"
-          />
-          <RegistrationRow
-            name="Charlie Masuka"
-            grade="Grade 2"
-            branch="West Campus"
-            status="Rejected"
-          />
-        </tbody>
-      </table>
-    </div>
-    </div>
-  )
-};
-
-const DocumentsTab = () => (
-  <div className="bg-navy-800 rounded-lg shadow-md p-6">
-    <h2 className="text-2xl font-bold mb-6 text-blue-300">Document Verification</h2>
-    <div className="mb-4 flex justify-between items-center">
-      <div className="relative">
-        <input
-          type="text"
+const DocumentsPanel = ({ registrations, itemVariants }) => {
+  return (
+    <motion.div 
+      className="bg-white rounded-lg shadow-lg p-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+    >
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Document Verification</h2>
+        <TextField
+          size="small"
           placeholder="Search documents..."
-          className="pl-10 pr-4 py-2 rounded-full bg-navy-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          InputProps={{
+            startAdornment: <Search className="text-gray-400 mr-2" size={20} />
+          }}
         />
-        <Search className="absolute left-3 top-2 text-gray-400" size={20} />
       </div>
-      <Link to="/upload-document">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-blue-500 text-white px-4 py-2 rounded-full flex items-center"
-        >
-          Upload Document <ChevronRight size={20} className="ml-2" />
-        </motion.button>
-      </Link>
-    </div>
-    <ul className="space-y-4">
-      <DocumentItem
-        name="Transfer Letter - Alice Johnson"
-        status="Pending"
-        icon={AlertCircle}
-        color="text-yellow-500"
-      />
-      <DocumentItem
-        name="Report Card - Bob Smith"
-        status="Approved"
-        icon={CheckCircle}
-        color="text-green-500"
-      />
-      <DocumentItem
-        name="Birth Certificate - Charlie Brown"
-        status="Rejected"
-        icon={XCircle}
-        color="text-red-500"
-      />
-    </ul>
-  </div>
-);
 
-const PaymentsTab = () => (
-  <div className="bg-navy-800 rounded-lg shadow-md p-6">
-    <h2 className="text-2xl font-bold mb-6 text-blue-300">Payment Overview</h2>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <DashboardCard
-        title="Total Revenue"
-        value="$25,000"
-        icon={CreditCard}
-        color="text-green-500"
-      />
-      <DashboardCard
-        title="Pending Payments"
-        value="$5,000"
-        icon={AlertCircle}
-        color="text-yellow-500"
-      />
-      <DashboardCard
-        title="Overdue Payments"
-        value="$2,000"
-        icon={XCircle}
-        color="text-red-500"
-      />
-    </div>
-    <div className="mb-4 flex justify-between items-center">
-      <div className="relative">
-        <input
-          type="text"
-          placeholder="Search payments..."
-          className="pl-10 pr-4 py-2 rounded-full bg-navy-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <Search className="absolute left-3 top-2 text-gray-400" size={20} />
+      <div className="space-y-4">
+        {registrations.map((registration) => (
+          <motion.div
+            key={registration.id}
+            variants={itemVariants}
+            className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow"
+          >
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {registration.full_name}'s Documents
+                </h3>
+                <div className="mt-2 space-y-2">
+                  {['Birth Certificate', 'Previous School Records', 'Medical Records'].map((doc) => (
+                    <div key={doc} className="flex items-center space-x-2">
+                      <FileText size={16} className="text-gray-400" />
+                      <span className="text-gray-600">{doc}</span>
+                      <IconButton size="small">
+                        <Download className="text-blue-500" size={16} />
+                      </IconButton>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <Button
+                variant="contained"
+                color="success"
+                startIcon={<CheckCircle />}
+              >
+                Verify All
+              </Button>
+            </div>
+          </motion.div>
+        ))}
       </div>
-      <Link to="/new-payment">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-blue-500 text-white px-4 py-2 rounded-full flex items-center"
+    </motion.div>
+  );
+};
+
+const RequestDetailsDialog = ({ request, onClose }) => {
+  if (!request) return null;
+
+  return (
+    <Dialog 
+      open={!!request} 
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+    >
+      <DialogTitle>
+        Registration Request Details
+      </DialogTitle>
+      <DialogContent>
+        <div className="space-y-4 mt-4">
+          <div>
+            <h4 className="font-medium text-gray-900">Personal Information</h4>
+            <div className="mt-2 space-y-2">
+              <p className="text-gray-600">Name: {request.full_name}</p>
+              <p className="text-gray-600">Grade: {request.grade}</p>
+              <p className="text-gray-600">Branch: {request.branch}</p>
+            </div>
+          </div>
+          <div>
+            <h4 className="font-medium text-gray-900">Documents</h4>
+            <div className="mt-2 space-y-2">
+              {['Birth Certificate', 'Previous School Records', 'Medical Records'].map((doc) => (
+                <div key={doc} className="flex items-center justify-between">
+                  <span className="text-gray-600">{doc}</span>
+                  <IconButton size="small">
+                    <Download className="text-blue-500" size={16} />
+                  </IconButton>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>
+          Close
+        </Button>
+        <Button
+          variant="contained"
+          color="success"
+          startIcon={<CheckCircle />}
         >
-          New Payment <ChevronRight size={20} className="ml-2" />
-        </motion.button>
-      </Link>
-    </div>
-    <div className="overflow-x-auto">
-      <table className="w-full">
-        <thead>
-          <tr className="text-left border-b border-navy-600">
-            <th className="py-3 px-2 text-blue-300">Student Name</th>
-            <th className="py-3 px-2 text-blue-300">Amount</th>
-            <th className="py-3 px-2 text-blue-300">Date</th>
-            <th className="py-3 px-2 text-blue-300">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <PaymentRow
-            name="Alice Johnson"
-            amount="$500"
-            date="2023-05-01"
-            status="Paid"
-          />
-          <PaymentRow
-            name="Bob Smith"
-            amount="$750"
-            date="2023-05-15"
-            status="Pending"
-          />
-          <PaymentRow
-            name="Charlie Brown"
-            amount="$600"
-            date="2023-04-30"
-            status="Overdue"
-          />
-        </tbody>
-      </table>
-    </div>
-  </div>
-);
+          Approve
+        </Button>
+        <Button
+          variant="contained"
+          color="error"
+          startIcon={<XCircle />}
+        >
+          Reject
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
 export default AdminDashboard;

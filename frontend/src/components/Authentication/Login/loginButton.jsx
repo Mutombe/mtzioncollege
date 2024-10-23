@@ -88,7 +88,7 @@ const LoginButton = () => {
           <Button onClick={()=>setOpenModal(false)} color="secondary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} color="primary" disabled={loading} className="bg-blue-800">
+          <Button onClick={handleSubmit} color="primary" className="bg-blue-800">
             Log In
           </Button>
         </DialogActions>

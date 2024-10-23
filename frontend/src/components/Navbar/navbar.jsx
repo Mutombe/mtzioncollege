@@ -37,14 +37,14 @@ const Navbar = () => {
 
   const GradientHeading = () => {
     return (
-      <h1 className="text-xl md:text-3xl font-bold hover:opacity-80 transition-all duration-200 border-2 border-blue-500 rounded-full py-2 px-2">
+      <h1 className="text-xl md:text-3xl font-bold hover:opacity-80 transition-all duration-200 border-1 border-blue-500 rounded-full py-2 px-2">
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-blue-500" style={{
           backgroundImage: 'linear-gradient(to right, white 50%, #93C5FD 50%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           display: 'inline-block'
         }}>
-          MT ZION COLLEGE
+          MT ZION
         </span>
       </h1>
     );

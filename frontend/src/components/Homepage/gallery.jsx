@@ -3,14 +3,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { format, parseISO } from 'date-fns';
 import { Calendar, Image as ImageIcon, Filter, X } from 'lucide-react';
 
-// Mock data for events/memories
 const memories = [
-  { id: 1, title: 'Summer Vacation', date: '2023-07-15', image: '/images/mtzion.png', description: 'Unforgettable beach trip with family' },
-  { id: 2, title: 'Graduation Day', date: '2023-05-20', image: '/images/mtzion2.jpg', description: 'Finally got my degree!' },
-  { id: 3, title: 'First Job', date: '2023-09-01', image: '/images/mtzion3.jpg', description: 'Starting my career journey' },
-  { id: 4, title: 'Wedding Day', date: '2023-06-12', image: '/images/mtzion4.jpg', description: 'The most beautiful day of our lives' },
-  { id: 5, title: 'New Year Party', date: '2024-01-01', image: '/images/mtzion.png', description: 'Welcoming the new year with friends' },
-  // Add more memories as needed
+  { id: 1, title: "Summer Leaver's Party", date: '2023-07-15', image: '/images/mtzion3.jpg', description: "Unforgettable Form Four Leaver's Party with all School Members" },
+  { id: 2, title: 'Graduation Day', date: '2023-05-20', image: '/images/mtzion2.jpg', description: 'ECD Graduation' },
+  { id: 3, title: 'Africa Day', date: '2023-09-01', image: '/images/africa.png', description: 'Celebrating the African diaspora' },
+  { id: 4, title: 'Fun Day', date: '2023-06-12', image: '/images/mtzion4.jpg', description: 'The most beautiful day at Mt Zion' },
+  { id: 5, title: 'New Year Party', date: '2024-01-01', image: '/images/mtzion2.jpg', description: 'Welcoming the new year with celebration' },
 ];
 
 const MemoryGallery = () => {
@@ -80,7 +78,7 @@ const MemoryGallery = () => {
   return (
     <div className="min-h-screen p-8">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">Memory Gallery</h1>
+        <h1 className="text-4xl font-bold text-center mb-8 text-gray-100">Memory Gallery</h1>
         
         <div className="mb-8 flex justify-between items-center">
           <div className="relative">
