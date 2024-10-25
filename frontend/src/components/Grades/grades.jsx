@@ -1,177 +1,294 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
-import { fetchGrades } from '../../redux/gradeSlice';
-import { motion } from 'framer-motion';
-import { BookOpen, Users, Filter, Grid, List, SmilePlus, Car } from 'lucide-react';
-import LoadingPage from '../Loading/loading';
-import ErrorPage from '../Error/error';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  BookOpen,
+  Users,
+  ChevronDown,
+  ChevronUp,
+  Grid,
+  List,
+  GraduationCap,
+  BookA,
+  ArrowLeft,
+  Clock,
+  Calendar
+} from "lucide-react";
+import { Link } from "react-router-dom";
+
+const SAMPLE_GRADES = [
+  {
+    id: 1,
+    name: "Grade 1",
+    students: 45,
+    subjects: ["English", "Mathematics", "Science", "Social Studies", "Art", "Physical Education", "Music"],
+    classHours: 30,
+    description: "Foundation level focusing on basic literacy and numeracy skills.",
+    teachingStaff: 4,
+    academicYear: "2024",
+    image: "images/grade1.jpg"
+  },
+  {
+    id: 2,
+    name: "Grade 2",
+    students: 42,
+    subjects: ["English", "Mathematics", "Science", "Social Studies", "Art", "Physical Education", "Computer"],
+    classHours: 32,
+    description: "Building on foundational skills with introduction to more complex concepts.",
+    teachingStaff: 4,
+    academicYear: "2024",
+    image: "images/grade2.jpg"
+  },
+  {
+    id: 3,
+    name: "Grade 3",
+    students: 38,
+    subjects: ["English", "Mathematics", "Science", "Social Studies", "Art", "Physical Education", "French"],
+    classHours: 34,
+    description: "Advancing core subjects while introducing foreign language studies.",
+    teachingStaff: 5,
+    academicYear: "2024",
+    image: "images/grade3.jpg"
+  }
+];
 
 const GradesPage = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { branchId } = useParams();
-  const { grades, loading, success, error } = useSelector((state) => state.grade);
-  const { branches, loading: branchLoading, error: branchError } = useSelector((state) => state.branch);
-
-  const currentBranch = branches.find(branch => branch.id === Number(branchId));
-  localStorage.setItem('branchId', branchId);
-
-  const [viewMode, setViewMode] = useState('grid');
-  const [sortBy, setSortBy] = useState('name');
-  const [filterBy, setFilterBy] = useState('');
-
-  useEffect(() => {
-    if (!success && !loading) {
-      dispatch(fetchGrades({ branchId }));
-    }
-  }, [success, loading, dispatch, branchId]);
-
-  if (loading) {
-    return <LoadingPage />;
-  }
-
-  if (error) {
-    return <ErrorPage error={error} />;
-  }
-
-  const handleGradeSelectRegister = (gradeId) => {
-    navigate(`/branches/${branchId}/grades/${gradeId}/register`);
-  };
-
-  const handleGradeSelectDetail = (gradeId) => {
-    navigate(`/branches/${branchId}/grades/${gradeId}/`);
-  };
-
-  const sortedAndFilteredGrades = grades
-    .filter(grade => grade.name.toLowerCase().includes(filterBy.toLowerCase()))
-    .sort((a, b) => {
-      if (sortBy === 'name') return a.name.localeCompare(b.name);
-      if (sortBy === 'students') return b.students - a.students;
-      return 0;
-    });
+  const [viewMode, setViewMode] = useState("list");
+  const [grades] = useState(SAMPLE_GRADES);
 
   return (
-    <div className="min-h-screen  ">
-      <header className="bg-navy-900 text-white py-12">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-2">Select a Grade</h1>
-          <p className="text-xl text-blue-300">{currentBranch?.name}</p>
+    <div className="min-h-screen pt-20">
+      <header className="bg-gradient-to-r from-navy-900 to-navy-800 shadow-lg">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <button
+                onClick={() => navigate(-1)}
+                className="mr-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <ArrowLeft size={24} />
+              </button>
+              <div>
+                <h1 className="text-2xl font-bold text-khaki-700 ">
+                  Forms
+                </h1>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Primary School
+                </p>
+              </div>
+            </div>
+            
+
+          </div>
         </div>
       </header>
-      <main className="container mx-auto px-4 py-12">
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center">
-            <input
-              type="text"
-              placeholder="Search grades..."
-              value={filterBy}
-              onChange={(e) => setFilterBy(e.target.value)}
-              className="px-4 py-2 border border-bg-navy-800 rounded-md mr-4 text-gray-700"
-            />
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 focus:outline-none"
-            >
-              <option className="text-gray-700 rounded-md" value="name">Sort by Name</option>
-              <option  className="text-gray-700 rounded-md" value="students">Sort by Students</option>
-            </select>
-          </div>
+      
+      <div className="container mx-auto px-4 py-8">
+        <motion.div 
+          className="flex justify-end mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
           <button
-            onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
-            className="flex items-center bg-light-blue-500 text-white px-4 py-2 rounded-md "
+            onClick={() => setViewMode(viewMode === "list" ? "grid" : "list")}
+            className="flex items-center bg-[#F0E68C] text-[#0A1D3B] px-5 py-2.5 rounded-lg hover:bg-[#DFD98B] transition-all duration-300 shadow-lg hover:shadow-xl"
           >
-            {viewMode === 'grid' ? <List className="mr-2 text-blue-400" /> : <Grid className="mr-2 text-blue-400" />}
-            {viewMode === 'grid' ? 'List View' : 'Grid View'}
+            {viewMode === "list" ? (
+              <Grid className="mr-2 w-5 h-5" />
+            ) : (
+              <List className="mr-2 w-5 h-5" />
+            )}
+            {viewMode === "list" ? "Grid View" : "List View"}
           </button>
-        </div>
-        {viewMode === 'grid' ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {sortedAndFilteredGrades.map((grade) => (
-              <GradeCard key={grade.id} grade={grade} onSelect={handleGradeSelectDetail} onSelectRegister={handleGradeSelectRegister} />
+        </motion.div>
+
+        <AnimatePresence mode="wait">
+          <motion.div 
+            key={viewMode}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className={`grid ${
+              viewMode === "list" 
+                ? "grid-cols-1 gap-4" 
+                : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            }`}
+          >
+            {grades.map((grade) => (
+              viewMode === "list" ? (
+                <GradeListItem key={grade.id} grade={grade} />
+              ) : (
+                <GradeCard key={grade.id} grade={grade} />
+              )
             ))}
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {sortedAndFilteredGrades.map((grade) => (
-              <GradeListItem key={grade.id} grade={grade} onSelect={handleGradeSelectDetail} onSelectRegister={handleGradeSelectRegister} />
-            ))}
-          </div>
-        )}
-      </main>
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
 
-export const GradeCard = ({ grade, onSelect, onSelectRegister }) => (
-  <motion.div
-    whileHover={{ scale: 1.05 }}
-    className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden cursor-pointer"
-    onClick={() => onSelect(grade.id)}
-  >
-    <div className="p-6">
-      <div className="flex items-center justify-center mb-4">
-        <BookOpen size={48} className="text-blue-400" />
-      </div>
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 text-center">
-        {grade.name}
-      </h2>
-      <div className="flex justify-between text-gray-600 dark:text-gray-300 mb-4">
-        <div className="flex items-center">
-          <Users size={18} className="mr-2 text-blue-300" />
-          <span>{grade.students_count} Enrolled Students</span>
+const GradeCard = ({ grade }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <motion.div
+      layout
+      className="bg-white dark:bg-[#1A2F4F] rounded-xl shadow-xl overflow-hidden border border-[#F0E68C]/20"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="p-8">
+        <motion.div 
+          className="flex justify-center mb-6"
+          whileHover={{ scale: 1.1, rotate: 5 }}
+        >
+          <GraduationCap size={56} className="text-[#F0E68C]" />
+        </motion.div>
+        
+        <h2 className="text-3xl font-bold text-[#0A1D3B] dark:text-[#F0E68C] mb-4 text-center">
+          {grade.name}
+        </h2>
+        
+        <hr className="border-[#F0E68C]/30 mb-6" />
+
+        <div className="grid grid-cols-2 gap-6 mb-6">
+          <div className="flex items-center">
+            <Users size={20} className="mr-3 text-[#F0E68C]" />
+            <span className="text-gray-700 dark:text-gray-300">{grade.students} students</span>
+          </div>
+          <div className="flex items-center">
+            <BookOpen size={20} className="mr-3 text-[#F0E68C]" />
+            <span className="text-gray-700 dark:text-gray-300">{grade.subjects.length} subjects</span>
+          </div>
+          <div className="flex items-center">
+            <Clock size={20} className="mr-3 text-[#F0E68C]" />
+            <span className="text-gray-700 dark:text-gray-300">{grade.classHours}hrs/week</span>
+          </div>
+          <div className="flex items-center">
+            <Calendar size={20} className="mr-3 text-[#F0E68C]" />
+            <span className="text-gray-700 dark:text-gray-300">{grade.academicYear}</span>
+          </div>
         </div>
-        <div className="flex items-center">
-          <BookOpen size={18} className="mr-2 text-blue-300" />
-          <span>{grade.subjects && grade.subjects.length ? grade.subjects.length : 7} Subjects</span>
+
+        <hr className="border-[#F0E68C]/30 mb-6" />
+
+        <div className="flex justify-between gap-4">
+          <Link to={`/grades/${grade.id}/subjects`} className="flex-1">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full px-4 py-3 bg-[#F0E68C] text-[#0A1D3B] rounded-lg hover:bg-[#DFD98B] transition duration-300 flex items-center justify-center font-medium"
+            >
+              <BookA size={18} className="mr-2" /> Subjects
+            </motion.button>
+          </Link>
+
+          <Link to={`/grades/${grade.id}/register`} className="flex-1">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full px-4 py-3 bg-[#F0E68C] text-[#0A1D3B] rounded-lg hover:bg-[#DFD98B] transition duration-300 flex items-center justify-center font-medium"
+            >
+              <Users size={18} className="mr-2" /> Register
+            </motion.button>
+          </Link>
         </div>
-      </div>
-      <div className="flex justify-between text-gray-600 dark:text-gray-300 mb-4">
-      <p className="text-gray-600 dark:text-gray-300 text-center">
-        Click to view details
-      </p>
-      <motion.button whileHover={{ backgroundColor: '#1F2937' }} onClick={() => onSelectRegister(grade.id)} className='bg-blue-500 bg-navy-blue-500 flex items-center text-white px-1 py-1 rounded-lg ml-4'>
-          <motion.div whileHover={{ scale: 1.2, backgroundColor: '#1F2937', color: 'white', marginRight: '4px' }}>
-            <SmilePlus size={18} className="mr-2 text-blue-100" />
+
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="mt-6"
+            >
+              <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                {grade.description}
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                {grade.subjects.map((subject, index) => (
+                  <div
+                    key={index}
+                    className="bg-[#F0E68C]/10 dark:bg-[#F0E68C]/5 p-3 rounded-lg text-center text-sm text-gray-700 dark:text-[#F0E68C] font-medium"
+                  >
+                    {subject}
+                  </div>
+                ))}
+              </div>
             </motion.div>
-            <span>Register</span>
-        </motion.button>
+          )}
+        </AnimatePresence>
+
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="flex items-center justify-center w-full bg-[#0A1D3B] text-white rounded-lg hover:bg-[#1A2F4F] transition-colors duration-300 mt-6 p-3"
+        >
+          {isExpanded ? (
+            <>
+              <span className="mr-2">Show Less</span>
+              <ChevronUp size={18} />
+            </>
+          ) : (
+            <>
+              <span className="mr-2">Learn More</span>
+              <ChevronDown size={18} />
+            </>
+          )}
+        </button>
       </div>
-    </div>
-  </motion.div>
-);
+    </motion.div>
+  );
+};
 
-
-export const GradeListItem = ({ grade, onSelect, onSelectRegister}) => (
+const GradeListItem = ({ grade }) => (
   <motion.div
-    whileHover={{ backgroundColor: '#1D3557' }}
-    className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden cursor-pointer p-4"
-    onClick={() => onSelect(grade.id)}
+    className="bg-white dark:bg-[#1A2F4F] rounded-xl shadow-lg p-6 border border-[#F0E68C]/20"
+    initial={{ opacity: 0, x: -20 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.3 }}
+    whileHover={{ y: -2 }}
   >
     <div className="flex justify-between items-center">
       <div className="flex items-center">
-        <BookOpen size={24} className="text-blue-400 mr-4" />
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-          {grade.name}
-        </h2>
+        <motion.div
+          whileHover={{ scale: 1.1, rotate: 5 }}
+          className="mr-6"
+        >
+          <GraduationCap size={32} className="text-[#F0E68C]" />
+        </motion.div>
+        <div>
+          <h2 className="text-2xl font-bold text-[#0A1D3B] dark:text-[#F0E68C]">
+            {grade.name}
+          </h2>
+          <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+            {grade.teachingStaff} teaching staff
+          </p>
+        </div>
       </div>
-      <div className="flex items-center text-gray-600 dark:text-gray-300">
-        <Users size={18} className="mr-2 text-blue-400" />
-        <span>{grade.students_count} Students</span>
-        <BookOpen size={18} className="ml-4 mr-2 text-blue-400" />
-        <span>{grade.subjects && grade.subjects.length ? grade.subjects.length : 7} Subjects</span>
-        <motion.button whileHover={{ backgroundColor: '#1F2937' }} onClick={() => onSelectRegister(grade.id)} className='bg-blue-500 bg-navy-blue-500 flex items-center text-white px-1 py-1 rounded-lg ml-4'>
-          <motion.div whileHover={{ scale: 1.2, backgroundColor: '#1F2937', color: 'white', marginRight: '4px' }}>
-            <SmilePlus size={18} className="mr-2 text-blue-100" />
-            </motion.div>
-            <span>Register</span>
-        </motion.button>
+      
+      <div className="flex items-center space-x-6">
+        <div className="flex items-center text-gray-600 dark:text-gray-300">
+          <Users size={20} className="mr-2 text-[#F0E68C]" />
+          <span>{grade.students}</span>
+        </div>
+        <div className="flex items-center text-gray-600 dark:text-gray-300">
+          <BookOpen size={20} className="mr-2 text-[#F0E68C]" />
+          <span>{grade.subjects.length}</span>
+        </div>
+        <Link to={`/grades/${grade.id}/subjects`}>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-6 py-2 bg-[#F0E68C] text-[#0A1D3B] rounded-lg hover:bg-[#DFD98B] transition duration-300 font-medium"
+          >
+            View
+          </motion.button>
+        </Link>
       </div>
     </div>
   </motion.div>
 );
 
 export default GradesPage;
-
-

@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format, parseISO } from 'date-fns';
-import { Calendar, Image as ImageIcon, Filter, X } from 'lucide-react';
+import { 
+  Calendar,
+  X,
+  ArrowLeft,
+  Image as ImageIcon,
+  Camera,
+  Clock
+} from 'lucide-react';
 
 const memories = [
   { id: 1, title: "Summer Leaver's Party", date: '2023-07-15', image: '/images/mtzion3.jpg', description: "Unforgettable Form Four Leaver's Party with all School Members" },
@@ -25,96 +32,158 @@ const MemoryGallery = () => {
     }
   }, [filterDate]);
 
-  const MemoryCard = ({ memory }) => (
-    <motion.div
-      layout
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      whileHover={{ scale: 1.05 }}
-      onClick={() => setSelectedMemory(memory)}
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:shadow-xl"
-    >
-      <img src={memory.image} alt={memory.title} className="w-full h-48 object-cover" />
-      <div className="p-4">
-        <h3 className="text-xl font-semibold mb-2">{memory.title}</h3>
-        <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">{format(parseISO(memory.date), 'MMMM d, yyyy')}</p>
-        <p className="text-gray-600 dark:text-gray-300 line-clamp-2">{memory.description}</p>
-      </div>
-    </motion.div>
-  );
-
-  const MemoryModal = ({ memory }) => (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
-      onClick={() => setSelectedMemory(null)}
-    >
-      <motion.div
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: 50, opacity: 0 }}
-        className="dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden max-w-2xl w-full"
-        onClick={e => e.stopPropagation()}
-      >
-        <img src={memory.image} alt={memory.title} className="w-full h-64 object-cover" />
-        <div className="p-6">
-          <h2 className="text-3xl font-bold mb-2">{memory.title}</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">{format(parseISO(memory.date), 'MMMM d, yyyy')}</p>
-          <p className="text-gray-600 dark:text-gray-300">{memory.description}</p>
-        </div>
-        <button
-          onClick={() => setSelectedMemory(null)}
-          className="absolute top-2 right-2 text-white bg-gray-800 rounded-full p-1 hover:bg-gray-700 transition-colors"
-        >
-          <X size={24} />
-        </button>
-      </motion.div>
-    </motion.div>
-  );
-
   return (
-    <div className="min-h-screen p-8">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8 text-gray-100">Memory Gallery</h1>
-        
-        <div className="mb-8 flex justify-between items-center">
-          <div className="relative">
+    <div className="min-h-screen pt-20">
+      <header className="bg-gradient-to-r from-navy-900 to-navy-800 shadow-lg">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <button
+                onClick={() => window.history.back()}
+                className="mr-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <ArrowLeft size={24} />
+              </button>
+              <div>
+                <h1 className="text-2xl font-bold text-khaki-700">
+                  Memory Gallery
+                </h1>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Our School Moments
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8 flex flex-wrap gap-4 items-center justify-between">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="relative"
+          >
             <input
               type="date"
               value={filterDate}
               onChange={(e) => setFilterDate(e.target.value)}
-              className="text-black pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="pl-10 pr-4 py-2 bg-white dark:bg-[#1A2F4F] border border-[#F0E68C]/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F0E68C] text-[#0A1D3B] dark:text-[#F0E68C]"
             />
-            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500" size={20} />
-          </div>
+            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#F0E68C]" size={20} />
+          </motion.div>
+          
           {filterDate && (
-            <button
+            <motion.button
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
               onClick={() => setFilterDate('')}
-              className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-red-400 transition-colors"
+              className="flex items-center px-6 py-2 bg-[#F0E68C] text-[#0A1D3B] rounded-lg hover:bg-[#DFD98B] transition-all duration-300"
             >
               <X size={20} className="mr-2" />
               Clear Filter
-            </button>
+            </motion.button>
           )}
         </div>
 
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div 
+          layout 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
           <AnimatePresence>
             {filteredMemories.map(memory => (
-              <MemoryCard key={memory.id} memory={memory} />
+              <MemoryCard key={memory.id} memory={memory} setSelectedMemory={setSelectedMemory} />
             ))}
           </AnimatePresence>
         </motion.div>
 
         <AnimatePresence>
-          {selectedMemory && <MemoryModal memory={selectedMemory} />}
+          {selectedMemory && (
+            <MemoryModal memory={selectedMemory} onClose={() => setSelectedMemory(null)} />
+          )}
         </AnimatePresence>
       </div>
     </div>
   );
 };
+
+const MemoryCard = ({ memory, setSelectedMemory }) => (
+  <motion.div
+    layout
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -20 }}
+    whileHover={{ y: -5 }}
+    onClick={() => setSelectedMemory(memory)}
+    className="bg-white dark:bg-[#1A2F4F] rounded-xl shadow-xl overflow-hidden cursor-pointer border border-[#F0E68C]/20"
+  >
+    <div className="relative h-48">
+      <img src={memory.image} alt={memory.title} className="w-full h-full object-cover" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+    </div>
+    
+    <div className="p-6">
+      <h3 className="text-xl font-bold text-[#0A1D3B] dark:text-[#F0E68C] mb-2">
+        {memory.title}
+      </h3>
+      
+      <div className="flex items-center text-gray-600 dark:text-gray-400 mb-3">
+        <Clock size={16} className="mr-2 text-[#F0E68C]" />
+        <span className="text-sm">
+          {format(parseISO(memory.date), 'MMMM d, yyyy')}
+        </span>
+      </div>
+      
+      <p className="text-gray-600 dark:text-gray-300 line-clamp-2">
+        {memory.description}
+      </p>
+    </div>
+  </motion.div>
+);
+
+const MemoryModal = ({ memory, onClose }) => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+    onClick={onClose}
+  >
+    <motion.div
+      initial={{ y: 50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 50, opacity: 0 }}
+      className="bg-white dark:bg-[#1A2F4F] rounded-xl shadow-2xl overflow-hidden max-w-2xl w-full border border-[#F0E68C]/20"
+      onClick={e => e.stopPropagation()}
+    >
+      <div className="relative">
+        <img src={memory.image} alt={memory.title} className="w-full h-72 object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+      </div>
+      
+      <div className="p-6">
+        <h2 className="text-3xl font-bold text-[#0A1D3B] dark:text-[#F0E68C] mb-3">
+          {memory.title}
+        </h2>
+        
+        <div className="flex items-center text-gray-600 dark:text-gray-400 mb-4">
+          <Clock size={18} className="mr-2 text-[#F0E68C]" />
+          <span>{format(parseISO(memory.date), 'MMMM d, yyyy')}</span>
+        </div>
+        
+        <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+          {memory.description}
+        </p>
+      </div>
+      
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 bg-[#F0E68C] text-[#0A1D3B] rounded-full p-2 hover:bg-[#DFD98B] transition-colors"
+      >
+        <X size={24} />
+      </button>
+    </motion.div>
+  </motion.div>
+);
 
 export default MemoryGallery;

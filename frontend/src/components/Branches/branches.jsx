@@ -12,13 +12,48 @@ import {
   Baby,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBranches } from "../../redux/branchSlice";
 import LoadingPage from "../Loading/loading";
 import ErrorPage from "../Error/error";
 import { Link } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+
+const SAMPLE_BRANCHES = [
+  {
+    id: 1,
+    name: "Mt Zion Central Campus",
+    location: "Gweru, Zimbabwe",
+    students: 850,
+    grades: "Form 1-6",
+    description: "Our flagship campus featuring state-of-the-art facilities and a comprehensive academic program.",
+    image: "images/mtzion3.jpg",
+    latitude: -19.4167,
+    longitude: 29.75
+  },
+  {
+    id: 2,
+    name: "Mt Zion East Campus",
+    location: "Harare, Zimbabwe",
+    students: 720,
+    grades: "Form 1-4",
+    description: "Modern urban campus specializing in technology and innovation.",
+    image: "images/mtzion.png",
+    latitude: -17.8292,
+    longitude: 31.0522
+  },
+  {
+    id: 3,
+    name: "Mt Zion South Campus",
+    location: "Bulawayo, Zimbabwe",
+    students: 680,
+    grades: "Form 1-4",
+    description: "Known for excellence in arts and cultural programs.",
+    image: "images/mtzion2.jpg",
+    latitude: -20.1325,
+    longitude: 28.626
+  }
+];
 
 // Fix for default marker icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -33,31 +68,20 @@ L.Icon.Default.mergeOptions({
 
 const BranchesPage = () => {
   const dispatch = useDispatch();
-  const { branches, success, loading, error } = useSelector(
+  const { success, loading, error } = useSelector(
     (state) => state.branch
   );
+
+  const [branches, setBranches] = useState(SAMPLE_BRANCHES);
   const [viewMode, setViewMode] = useState("list");
 
-  useEffect(() => {
-    if (!success && !loading) {
-      dispatch(fetchBranches());
-    }
-  }, [success, loading, dispatch]);
-
-  if (loading === true) {
-    return <LoadingPage />;
-  }
-
-  if (error) {
-    return <ErrorPage error={error} />;
-  }
 
   return (
-    <div className="min-h-screen">
-      <header className="bg-navy-900 text-white py-12">
+    <div className="min-h-screen bg-navy-900 pt-20">
+      <header className="bg-gradient-to-r from-navy-900 to-navy-800 text-white py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-2">Our Branches</h1>
-          <p className="text-xl text-blue-300">
+          <h1 className="text-4xl font-bold mb-2 text-khaki-300">Our Branches</h1>
+          <p className="text-xl text-khaki-200">
             Discover Mt Zion College campuses across Zimbabwe
           </p>
         </div>
@@ -66,7 +90,7 @@ const BranchesPage = () => {
         <div className="flex justify-end mb-4">
           <button
             onClick={() => setViewMode(viewMode === "list" ? "map" : "list")}
-            className="flex items-center bg-light-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300"
+            className="flex items-center bg-khaki-700 text-navy-900 px-4 py-2 rounded-md hover:bg-khaki-600 transition-colors duration-300"
           >
             {viewMode === "list" ? (
               <Map className="mr-2" />
@@ -102,7 +126,7 @@ const BranchCard = ({ branch }) => {
       transition={{ duration: 0.5 }}
     >
       <img
-        src={branch.image ? branch.image : "/images/logo.png"}
+        src={branch.image}
         alt={branch.name}
         className="w-full h-48 object-cover"
       />
@@ -114,21 +138,21 @@ const BranchCard = ({ branch }) => {
 
         <div className="flex justify-between text-gray-600 dark:text-gray-300 mb-4">
         <div className="flex items-center text-gray-600 dark:text-gray-300 mb-4">
-          <MapPin size={18} className="mr-2 text-blue-400" />
+          <MapPin size={18} className="mr-2 text-khaki-700" />
           <span>{branch.location}</span>
         </div>
         <div className="flex items-center">
-            <BookOpen size={18} className="mr-2 text-blue-400" />
+            <BookOpen size={18} className="mr-2 text-khaki-700" />
             <span>{branch.grades}Form 1 - 4</span>
           </div>
           </div>
         <div className="flex justify-between text-gray-600 dark:text-gray-300 mb-4">
           <div className="flex items-center ">
-            <Users size={18} className="mr-2 text-blue-400" />
+            <Users size={18} className="mr-2 text-khaki-700" />
             <span>{branch.students} students</span>
           </div>
           <div className="flex items-center">
-            <BookOpen size={18} className="mr-2 text-blue-400" />
+            <BookOpen size={18} className="mr-2 text-khaki-700" />
             <span>{branch.grades}7 Grades</span>
           </div>
         </div>
@@ -140,9 +164,9 @@ const BranchCard = ({ branch }) => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300 flex items-center"
+              className="px-2 py-1 bg-khaki-700 text-navy-900 rounded-md hover:bg-navy-600 transition duration-300 flex items-center"
             >
-              <Baby size={18} className="mr-2 text-blue-400" /> Primary
+              <Baby size={18} className="mr-2 text-navy-400" /> Primary
             </motion.button>
           </Link>
 
@@ -150,9 +174,9 @@ const BranchCard = ({ branch }) => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-light-blue-600 transition duration-300 flex items-center"
+              className="px-2 py-1 bg-khaki-700 text-navy-900 rounded-md hover:bg-light-blue-600 transition duration-300 flex items-center"
             >
-              <BookA size={18} className="mr-2 text-blue-400" /> Secondary
+              <BookA size={18} className="mr-2 text-navy-900" /> Secondary
             </motion.button>
           </Link>
         </div>

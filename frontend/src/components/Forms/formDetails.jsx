@@ -86,5 +86,5 @@ const InfoCard = ({ icon, title, value }) => (
     </div>
   </div>
 );
-
+ 
 export default FormDetails;

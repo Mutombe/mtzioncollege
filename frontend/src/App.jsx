@@ -11,9 +11,8 @@ import NotFoundPage from "./components/404/404";
 import { AnimatePresence } from "framer-motion";
 import ContactPage from "./components/Contact/contactUs";
 import GradesPage from "./components/Grades/grades";
-import GradeDetails from "./components/Grades/gradeDetails";
-import FormsPage from "./components/Forms/forms";
-import FormDetails from "./components/Forms/formDetails";
+import SubjectsPage from "./components/Grades/subjects";
+import FormsPage from "./components/Forms/formPage";
 import ProfilePage from "./components/Navbar/profile";
 import MemoryGallery from "./components/Homepage/gallery";
 import StudentLifePage from "./components/Student/studentLife";
@@ -69,23 +68,11 @@ const ThemedApp = () => {
                   path="/branches/:branchId/grades"
                   element={<GradesPage />}
                 />
+                <Route path="/branches/:branchId/forms" element={<FormsPage />} />
                 <Route
-                  path="/branches/:branchId/forms"
-                  element={<FormsPage />}
+                  path="grades/:gradeId/subjects"
+                  element={<SubjectsPage />}
                 />
-                <Route
-                  path="/branches/:branchId/grades/:gradeId"
-                  element={<GradeDetails />}
-                />
-                <Route
-                  path="/branches/:branchId/forms/:formId"
-                  element={<FormDetails />}
-                />
-                <Route
-                  path="/branches/:branchId/forms/:formId"
-                  element={""}
-                />
-                <Route path="/branch/:branchId/forms" element={""} />
                 <Route path="/register/:type/:id" element={<RegistrationForm />} />
                 <Route path="/gallery" element={<MemoryGallery />} />
                 <Route path="*" element={<NotFoundPage />} />
