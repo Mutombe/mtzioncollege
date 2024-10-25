@@ -79,7 +79,7 @@ const FormSubjectsPage = () => {
             <div className="flex items-center">
               <button
                 onClick={() => navigate(-1)}
-                className="mr-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="mr-4 p-2 rounded-full hover:bg-gray-100 hover:bg-gray-700"
               >
                 <ArrowLeft size={24} />
               </button>
@@ -116,7 +116,7 @@ const FormSubjectsPage = () => {
               placeholder="Search subjects..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 border-gray-600 bg-gray-800 text-gray-900 ext-white"
             />
           </div>
 
@@ -124,7 +124,7 @@ const FormSubjectsPage = () => {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              className="px-4 py-2 rounded-md border border-gray-300 border-gray-600 bg-white bg-gray-800 text-gray-900 text-white"
             >
               {categories.map(category => (
                 <option key={category} value={category}>

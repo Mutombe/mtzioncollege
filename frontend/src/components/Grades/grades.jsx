@@ -178,7 +178,7 @@ const GradeCard = ({ grade }) => {
   return (
     <motion.div
       layout
-      className="bg-white dark:bg-[#1A2F4F] rounded-xl shadow-xl overflow-hidden border border-[#F0E68C]/20"
+      className="bg-[#1A2F4F] rounded-xl shadow-xl overflow-hidden border border-[#F0E68C]/20"
     >
       <div className="p-4 sm:p-6 lg:p-8">
         <motion.div 
@@ -188,7 +188,7 @@ const GradeCard = ({ grade }) => {
           <GraduationCap size={40} className="sm:w-14 sm:h-14 text-[#F0E68C]" />
         </motion.div>
         
-        <h2 className="text-2xl sm:text-3xl font-bold text-[#0A1D3B] dark:text-[#F0E68C] mb-4 text-center">
+        <h2 className="text-2xl sm:text-3xl font-bold text-[#0A1D3B] text-[#F0E68C] mb-4 text-center">
           {grade.name}
         </h2>
         
@@ -197,15 +197,15 @@ const GradeCard = ({ grade }) => {
         <div className="grid grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
           <div className="flex items-center">
             <Users size={18} className="mr-2 sm:mr-3 text-[#F0E68C]" />
-            <span className="text-sm sm:text-base text-gray-700 dark:text-gray-300">{grade.students} students</span>
+            <span className="text-sm sm:text-base text-khaki-700 text-khaki-300">{grade.students} students</span>
           </div>
           <div className="flex items-center">
             <BookOpen size={18} className="mr-2 sm:mr-3 text-[#F0E68C]" />
-            <span className="text-sm sm:text-base text-gray-700 dark:text-gray-300">{grade.subjects.length} subjects</span>
+            <span className="text-sm sm:text-base text-khaki-700 text-khaki-300">{grade.subjects.length} subjects</span>
           </div>
           <div className="flex items-center">
             <Clock size={18} className="mr-2 sm:mr-3 text-[#F0E68C]" />
-            <span className="text-sm sm:text-base text-gray-700 dark:text-gray-300">{grade.classHours}hrs/week</span>
+            <span className="text-sm sm:text-base text-khaki-700 text-khaki-300">{grade.classHours}hrs/week</span>
           </div>
           <div className="flex items-center">
             <Calendar size={18} className="mr-2 sm:mr-3 text-[#F0E68C]" />

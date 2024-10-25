@@ -320,7 +320,7 @@ const SubjectCard = ({ subject }) => {
   return (
     <motion.div
       layout
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+      className="bg-khaki-800 rounded-lg shadow-lg overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -355,12 +355,12 @@ const SubjectCard = ({ subject }) => {
           </p>
           
           <div className="mb-4">
-            <h3 className="font-bold text-gray-900 dark:text-white mb-2">Key Topics</h3>
+            <h3 className="font-bold text-gray-900 text-white mb-2">Key Topics</h3>
             <div className="grid grid-cols-2 gap-2">
               {subject.topics.map((topic, index) => (
                 <div
                   key={index}
-                  className="bg-gray-100 dark:bg-gray-700 p-2 rounded text-center text-sm"
+                  className="bg-gray-100 bg-khaki-700 p-2 rounded text-center text-sm"
                 >
                   {topic}
                 </div>
@@ -369,12 +369,12 @@ const SubjectCard = ({ subject }) => {
           </div>
 
           <div className="mb-4">
-            <h3 className="font-bold text-gray-900 dark:text-white mb-2">Assessment Methods</h3>
+            <h3 className="font-bold text-gray-900 text-white mb-2">Assessment Methods</h3>
             <div className="grid grid-cols-2 gap-2">
               {subject.assessmentMethods.map((method, index) => (
                 <div
                   key={index}
-                  className="bg-gray-100 dark:bg-gray-700 p-2 rounded text-center text-sm"
+                  className="bg-gray-100 bg-khaki-700 p-2 rounded text-center text-sm"
                 >
                   {method}
                 </div>

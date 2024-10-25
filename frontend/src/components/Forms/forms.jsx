@@ -215,7 +215,7 @@ export const SubjectCard = ({ subject, branchType }) => {
   return (
     <motion.div
       layout
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+      className="bg-gray-800 rounded-lg shadow-lg overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -224,11 +224,11 @@ export const SubjectCard = ({ subject, branchType }) => {
         <div className="flex justify-center mb-4">
           <BookOpen size={48} className="text-khaki-600" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 text-center">
+        <h2 className="text-2xl font-bold text-gray-900 text-white mb-2 text-center">
           {subject.name}
         </h2>
 
-        <div className="flex justify-between text-gray-700 dark:text-gray-300 mb-4">
+        <div className="flex justify-between text-gray-700 text-gray-300 mb-4">
           <div className="flex items-center">
             <Clock size={18} className="mr-2 text-khaki-700" />
             <span>{subject.hoursPerWeek} hrs/week</span>
@@ -262,12 +262,12 @@ export const SubjectCard = ({ subject, branchType }) => {
 
           {subject.practicalTopics && (
             <div className="mb-4">
-              <h3 className="font-bold text-gray-900 dark:text-white mb-2">Practical Work</h3>
+              <h3 className="font-bold text-gray-900 text-white mb-2">Practical Work</h3>
               <div className="grid grid-cols-2 gap-2">
                 {subject.practicalTopics.map((topic, index) => (
                   <div
                     key={index}
-                    className="bg-blue-100 dark:bg-blue-900 p-2 rounded text-center text-sm"
+                    className="bg-khaki-900 bg-khaki-900 p-2 rounded text-center text-sm"
                   >
                     {topic}
                   </div>
@@ -279,7 +279,7 @@ export const SubjectCard = ({ subject, branchType }) => {
 
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center justify-center w-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300 mt-4 p-2"
+          className="flex items-center justify-center w-full bg-gray-200 bg-gray-700 text-gray-700 text-white rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300 mt-4 p-2"
         >
           {isExpanded ? (
             <>

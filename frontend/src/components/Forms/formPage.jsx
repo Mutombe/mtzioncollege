@@ -38,7 +38,7 @@ import {
             <div className="flex items-center">
               <button
                 onClick={() => navigate(-1)}
-                className="mr-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="mr-4 p-2 rounded-full hover:bg-gray-100 hover:bg-gray-700"
               >
                 <ArrowLeft size={24} />
               </button>
