@@ -6,6 +6,7 @@ import Loading from "./components/Loading/loading";
 import ErrorBoundary from "./components/Error/errorBoundary";
 import Navbar from "./components/Navbar/navbar";
 import { ThemeProvider, useTheme } from "./components/themeContext";
+import HomePage from "./components/HomePage/homepage";
 import Footer from "./components/Footer/footer";
 import NotFoundPage from "./components/404/404";
 import { AnimatePresence } from "framer-motion";
@@ -19,7 +20,6 @@ import StudentLifePage from "./components/Student/studentLife";
 import FormSubjectsPage from "./components/Forms/subjects";
 import AboutUsPage from "./components/Contact/aboutUs";
 
-const HomePage = lazy(() => import("./components/HomePage/homepage"));
 const BranchesPage = lazy(() => import("./components/Branches/branches"));
 const RegistrationForm = lazy(() =>
   import("./components/Registration/registrationForm")
