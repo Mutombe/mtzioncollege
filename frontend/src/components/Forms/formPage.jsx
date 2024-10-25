@@ -30,7 +30,7 @@ import {
   );
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen">
       {/* Header Section */}
       <header className="bg-gradient-to-r from-navy-900 to-navy-800 shadow-lg">
         <div className="container mx-auto px-4 py-6">
@@ -44,7 +44,7 @@ import {
               </button>
               <div>
                 <h1 className="text-2xl font-bold text-khaki-700 ">
-                  Grades
+                 Forms
                 </h1>
                 <p className="text-gray-600 dark:text-gray-400">
                   {selectedBranchType === BRANCH_TYPES.SECONDARY ? 'Secondary School' : 'Technical Institute'}
@@ -52,7 +52,7 @@ import {
               </div>
             </div>
             
-            {/* Branch Type Selector */}
+
             <select
               value={selectedBranchType}
               onChange={(e) => setSelectedBranchType(e.target.value)}

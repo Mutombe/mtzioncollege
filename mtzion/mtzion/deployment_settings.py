@@ -5,8 +5,8 @@ from .settings import BASE_DIR
 # SECURITY SETTINGS
 ALLOWED_HOSTS = [
     os.environ.get('RENDER_EXTERNAL_HOSTNAME'),
-    'avccmf.onrender.com',  # Add your backend domain
-    'avccmf-frontend.onrender.com',  # Add your frontend domain
+    'avccmf.onrender.com',  
+    'avccmf-frontend.onrender.com',  
 ]
 
 DEBUG = False

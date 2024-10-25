@@ -6,14 +6,12 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-// Sample data structure for different branch types
 export const BRANCH_TYPES = {
   SECONDARY: 'secondary',
   TECHNICAL: 'technical',
   VOCATIONAL: 'vocational'
 };
 
-// Sample forms data with branch-specific configurations
 export const SAMPLE_FORMS = {
   [BRANCH_TYPES.SECONDARY]: [
     {
@@ -21,7 +19,7 @@ export const SAMPLE_FORMS = {
       name: "Form 1",
       students: 120,
       subjects: [
-        "English", "Kiswahili", "Mathematics", "Physics", "Chemistry", 
+        "English", "Shona", "Mathematics", "Physics", "Chemistry", 
         "Biology", "History", "Geography", "CRE/IRE", "Computer Studies"
       ],
       classHours: 40,
@@ -35,7 +33,35 @@ export const SAMPLE_FORMS = {
       name: "Form 2",
       students: 115,
       subjects: [
-        "English", "Kiswahili", "Mathematics", "Physics", "Chemistry",
+        "English", "Shona", "Mathematics", "Physics", "Chemistry",
+        "Biology", "History", "Geography", "CRE/IRE", "Business Studies"
+      ],
+      classHours: 40,
+      description: "Second year of secondary education with optional subjects.",
+      teachingStaff: 12,
+      academicYear: "2024",
+      streamCount: 3
+    },
+    {
+      id: 2,
+      name: "Form 3",
+      students: 115,
+      subjects: [
+        "English", "Shona", "Mathematics", "Physics", "Chemistry",
+        "Biology", "History", "Geography", "CRE/IRE", "Business Studies"
+      ],
+      classHours: 40,
+      description: "Second year of secondary education with optional subjects.",
+      teachingStaff: 12,
+      academicYear: "2024",
+      streamCount: 3
+    },
+    {
+      id: 2,
+      name: "Form 4",
+      students: 115,
+      subjects: [
+        "English", "Shona", "Mathematics", "Physics", "Chemistry",
         "Biology", "History", "Geography", "CRE/IRE", "Business Studies"
       ],
       classHours: 40,
@@ -67,7 +93,7 @@ export const SAMPLE_FORMS = {
 export const  SUBJECTS_CONFIG = {
   [BRANCH_TYPES.SECONDARY]: {
     core: [
-      "English", "Kiswahili", "Mathematics"
+      "English", "Shona", "Mathematics"
     ],
     sciences: [
       "Physics", "Chemistry", "Biology"
@@ -87,7 +113,7 @@ export const  SUBJECTS_CONFIG = {
       "Technical Drawing", "Metalwork", "Woodwork"
     ],
     specialized: [
-      "Electrical Technology", "Computer Studies", "Mechanical Engineering"
+      "Arts", "Sciences", "Commercials"
     ]
   }
 };
@@ -196,20 +222,20 @@ export const SubjectCard = ({ subject, branchType }) => {
     >
       <div className="p-6">
         <div className="flex justify-center mb-4">
-          <BookOpen size={48} className="text-blue-600" />
+          <BookOpen size={48} className="text-khaki-600" />
         </div>
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 text-center">
           {subject.name}
         </h2>
 
-        <div className="flex justify-between text-gray-600 dark:text-gray-300 mb-4">
+        <div className="flex justify-between text-gray-700 dark:text-gray-300 mb-4">
           <div className="flex items-center">
-            <Clock size={18} className="mr-2 text-blue-600" />
+            <Clock size={18} className="mr-2 text-khaki-700" />
             <span>{subject.hoursPerWeek} hrs/week</span>
           </div>
           {branchType === BRANCH_TYPES.TECHNICAL && subject.practicalHours && (
             <div className="flex items-center">
-              <Award size={18} className="mr-2 text-blue-600" />
+              <Award size={18} className="mr-2 text-khaki-600" />
               <span>{subject.practicalHours} practical hrs</span>
             </div>
           )}

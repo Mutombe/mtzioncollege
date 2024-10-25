@@ -32,7 +32,6 @@ const HomePage = () => {
       <Testimonials />
       <AchievementsCounter />
       <UpcomingEvents />
-      <ContactInfo />
       <FloatingActionButton />
     </div>
   );
@@ -233,7 +232,7 @@ const EnhancedBackground = ({ isHovered }) => {
 
 const ScrollIndicator = () => (
   <motion.div
-    className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-[#BDB76B] cursor-pointer"
+    className="absolute bottom left-1/2 transform -translate-x-1/2 flex flex-col items-center text-[#BDB76B] cursor-pointer mr-5"
     animate={{ y: [0, 10, 0] }}
     transition={{ duration: 2, repeat: Infinity }}
   >
@@ -539,12 +538,29 @@ const ContactInfo = () => (
   </div>
 );
 
+
 const PhotoGallery = () => {
   const galleries = [
-    { title: 'Campus Life',image: "/images/mtzion.png", count: 4 },
-    { title: 'Academic Excellence', count: 4 },
-    { title: 'Sports & Activities', count: 4 },
-    { title: 'Events & Celebrations', count: 4 }
+    { 
+      title: 'School Life',
+      image: "images/libra.jpg",
+      count: 4 
+    },
+    { 
+      title: 'Academic Excellence',
+      image: "images/mtzion2.jpg",
+      count: 4 
+    },
+    { 
+      title: 'Sports & Activities',
+      image: "images/mtzion4.jpg",
+      count: 4 
+    },
+    { 
+      title: 'Events & Celebrations',
+      image: "images/DSC_0104.jpg",
+      count: 4 
+    }
   ];
 
   return (
@@ -560,11 +576,12 @@ const PhotoGallery = () => {
               viewport={{ once: true }}
               className="group relative overflow-hidden rounded-xl"
             >
-              <div className="aspect-[4/3] bg-gradient-to-br from-[#2a3b5e] to-[#1a2744] rounded-xl overflow-hidden">
-                {/* Placeholder for actual images */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-[#BDB76B]">{gallery.title}</span>
-                </div>
+              <div className="aspect-[4/3] rounded-xl overflow-hidden">
+                <img
+                  src={gallery.image}
+                  alt={gallery.title}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
               </div>
               <motion.div
                 className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
@@ -584,10 +601,26 @@ const PhotoGallery = () => {
 
 const FacilitiesShowcase = () => {
   const facilities = [
-    { title: 'Modern Classrooms', description: 'State-of-the-art learning environments' },
-    { title: 'Science Labs', description: 'Fully equipped laboratories for practical learning' },
-    { title: 'Sports Complex', description: 'International standard sports facilities' },
-    { title: 'Library', description: 'Extensive collection of books and digital resources' },
+    { 
+      title: 'Modern Classrooms',
+      description: 'State-of-the-art learning environments',
+      image: "images/class.jpeg"
+    },
+    { 
+      title: 'Science Labs',
+      description: 'Fully equipped laboratories for practical learning',
+      image: "images/lab.jpg"
+    },
+    { 
+      title: 'Sports Complex',
+      description: 'International standard sports facilities',
+      image: "images/sports.jfif"
+    },
+    { 
+      title: 'Library',
+      description: 'Extensive collection of books and digital resources',
+      image: "images/libra2.jpg"
+    },
   ];
 
   return (
@@ -601,15 +634,14 @@ const FacilitiesShowcase = () => {
               initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="relative group"
+              className="relative group rounded-xl overflow-hidden"
             >
               <div className="aspect-[16/9] rounded-xl overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#2a3b5e] to-[#1a2744] group-hover:scale-105 transition-transform duration-300">
-                  {/* Placeholder for actual facility image */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-[#BDB76B]">{facility.title}</span>
-                  </div>
-                </div>
+                <img
+                  src={facility.image}
+                  alt={facility.title}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
                 <h3 className="text-xl font-bold text-[#BDB76B] mb-2">{facility.title}</h3>
@@ -625,12 +657,36 @@ const FacilitiesShowcase = () => {
 
 const CampusLifeGrid = () => {
   const activities = [
-    { title: 'Academic Excellence', category: 'Education' },
-    { title: 'Sports Activities', category: 'Athletics' },
-    { title: 'Cultural Events', category: 'Culture' },
-    { title: 'Laboratory Sessions', category: 'Science' },
-    { title: 'Music Classes', category: 'Arts' },
-    { title: 'Student Clubs', category: 'Activities' },
+    { 
+      title: 'Academic Excellence',
+      category: 'Education',
+      image: "images/books.jpg"
+    },
+    { 
+      title: 'Sports Activities',
+      category: 'Athletics',
+      image: "images/ath.jpg"
+    },
+    { 
+      title: 'Cultural Events',
+      category: 'Culture',
+      image: "images/DSC_0264.jpg"
+    },
+    { 
+      title: 'Laboratory Sessions',
+      category: 'Science',
+      image: "images/lab.jpg"
+    },
+    { 
+      title: 'Music Classes',
+      category: 'Arts',
+      image: "images/music.jpg"
+    },
+    { 
+      title: 'Student Clubs',
+      category: 'Activities',
+      image: "images/chess.png"
+    },
   ];
 
   return (
@@ -647,12 +703,11 @@ const CampusLifeGrid = () => {
               className="group relative"
             >
               <div className="aspect-square rounded-xl overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#2a3b5e] to-[#1a2744] group-hover:scale-105 transition-transform duration-300">
-                  {/* Placeholder for actual activity image */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-[#BDB76B]">{activity.title}</span>
-                  </div>
-                </div>
+                <img
+                  src={activity.image}
+                  alt={activity.title}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
                 <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
                   <span className="text-sm text-[#BDB76B] bg-[#1a2744]/50 px-3 py-1 rounded-full">
                     {activity.category}
@@ -670,10 +725,30 @@ const CampusLifeGrid = () => {
 
 const StaffSpotlight = () => {
   const staff = [
-    { name: 'Dr. Sarah Johnson', role: 'Principal', experience: '20+ years' },
-    { name: 'Prof. Michael Chen', role: 'Head of Sciences', experience: '15+ years' },
-    { name: 'Dr. Emily Williams', role: 'Head of Arts', experience: '18+ years' },
-    { name: 'Prof. David Brown', role: 'Head of Sports', experience: '12+ years' },
+    { 
+      name: 'Mr Mangwenya',
+      role: 'Head Master',
+      experience: '20+ years',
+      image: "images/user2.avif"
+    },
+    { 
+      name: 'Mr Macheke',
+      role: 'Head of Sciences',
+      experience: '15+ years',
+      image: "images/user2.avif"
+    },
+    { 
+      name: 'Mrs Emily Williams',
+      role: 'Head of Arts',
+      experience: '18+ years',
+      image: "images/user2.avif"
+    },
+    { 
+      name: 'Mr Lunga',
+      role: 'Head of Sports',
+      experience: '12+ years',
+      image: "images/user2.avif"
+    },
   ];
 
   return (
@@ -690,12 +765,11 @@ const StaffSpotlight = () => {
               className="group"
             >
               <div className="relative aspect-[3/4] rounded-xl overflow-hidden mb-4">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#2a3b5e] to-[#1a2744] group-hover:scale-105 transition-transform duration-300">
-                  {/* Placeholder for actual staff photo */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-[#BDB76B]">{member.name}</span>
-                  </div>
-                </div>
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
               </div>
               <h3 className="text-xl font-bold text-[#BDB76B] mb-1">{member.name}</h3>
               <p className="text-gray-300">{member.role}</p>

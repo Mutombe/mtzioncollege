@@ -14,14 +14,13 @@ import {
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 
-// Sample subjects data with more detailed information
 const SAMPLE_SUBJECTS = {
-  1: [ // Grade 1 subjects
+  1: [
     {
       id: 1,
       name: "English",
       hoursPerWeek: 6,
-      teacher: "Mrs. Smith",
+      teacher: "Mrs. Hondo",
       description: "Foundational English focusing on reading, writing, and basic grammar.",
       topics: ["Phonics", "Basic Grammar", "Reading Comprehension", "Writing Skills"],
       assessmentMethods: ["Continuous Assessment", "Term Tests", "Projects"],
@@ -43,7 +42,7 @@ const SAMPLE_SUBJECTS = {
       id: 3,
       name: "Science",
       hoursPerWeek: 4,
-      teacher: "Ms. Parker",
+      teacher: "Ms. Chirape",
       description: "Introduction to basic scientific concepts through observation and experiments.",
       topics: ["Living Things", "Materials", "Weather", "Our Body"],
       assessmentMethods: ["Lab Work", "Projects", "Term Tests"],
@@ -51,9 +50,217 @@ const SAMPLE_SUBJECTS = {
       image: "images/science.jpg"
     }
   ],
-  2: [ // Grade 2 subjects - similar structure for other grades
-    // ... similar structure for Grade 2
-  ]
+    2: [ 
+        {
+            id: 1,
+            name: "English",
+            hoursPerWeek: 6,
+            teacher: "Mrs. Smith",
+            description: "Foundational English focusing on reading, writing, and basic grammar.",
+            topics: ["Phonics", "Basic Grammar", "Reading Comprehension", "Writing Skills"],
+            assessmentMethods: ["Continuous Assessment", "Term Tests", "Projects"],
+            books: ["English for Grade 1", "Reading Adventure Book 1"],
+            image: "images/english.jpg"
+          },
+          {
+            id: 2,
+            name: "Mathematics",
+            hoursPerWeek: 5,
+            teacher: "Mr. Tapfuma",
+            description: "Basic mathematics covering numbers, basic operations, and shapes.",
+            topics: ["Numbers 1-100", "Addition & Subtraction", "Basic Shapes", "Patterns"],
+            assessmentMethods: ["Weekly Quizzes", "Term Tests", "Practical Work"],
+            books: ["Primary Mathematics 1", "Math Practice Workbook"],
+            image: "images/math.jpg"
+          },
+          {
+            id: 3,
+            name: "Science",
+            hoursPerWeek: 4,
+            teacher: "Ms. Leila",
+            description: "Introduction to basic scientific concepts through observation and experiments.",
+            topics: ["Living Things", "Materials", "Weather", "Our Body"],
+            assessmentMethods: ["Lab Work", "Projects", "Term Tests"],
+            books: ["Discovery Science Grade 1", "Science Activity Book"],
+            image: "images/science.jpg"
+          }
+    ],
+    3: [ 
+        {
+            id: 1,
+            name: "English",
+            hoursPerWeek: 6,
+            teacher: "Mrs. Smith",
+            description: "Foundational English focusing on reading, writing, and basic grammar.",
+            topics: ["Phonics", "Basic Grammar", "Reading Comprehension", "Writing Skills"],
+            assessmentMethods: ["Continuous Assessment", "Term Tests", "Projects"],
+            books: ["English for Grade 1", "Reading Adventure Book 1"],
+            image: "images/english.jpg"
+          },
+          {
+            id: 2,
+            name: "Mathematics",
+            hoursPerWeek: 5,
+            teacher: "Mr. Gomo",
+            description: "Basic mathematics covering numbers, basic operations, and shapes.",
+            topics: ["Numbers 1-100", "Addition & Subtraction", "Basic Shapes", "Patterns"],
+            assessmentMethods: ["Weekly Quizzes", "Term Tests", "Practical Work"],
+            books: ["Primary Mathematics 1", "Math Practice Workbook"],
+            image: "images/math.jpg"
+          },
+          {
+            id: 3,
+            name: "Science",
+            hoursPerWeek: 4,
+            teacher: "Ms. Marasha",
+            description: "Introduction to basic scientific concepts through observation and experiments.",
+            topics: ["Living Things", "Materials", "Weather", "Our Body"],
+            assessmentMethods: ["Lab Work", "Projects", "Term Tests"],
+            books: ["Discovery Science Grade 1", "Science Activity Book"],
+            image: "images/science.jpg"
+          }
+    ],
+    4: [ 
+        {
+            id: 1,
+            name: "English",
+            hoursPerWeek: 6,
+            teacher: "Mrs. Smith",
+            description: "Foundational English focusing on reading, writing, and basic grammar.",
+            topics: ["Phonics", "Basic Grammar", "Reading Comprehension", "Writing Skills"],
+            assessmentMethods: ["Continuous Assessment", "Term Tests", "Projects"],
+            books: ["English for Grade 1", "Reading Adventure Book 1"],
+            image: "images/english.jpg"
+          },
+          {
+            id: 2,
+            name: "Mathematics",
+            hoursPerWeek: 5,
+            teacher: "Mr. Johnson",
+            description: "Basic mathematics covering numbers, basic operations, and shapes.",
+            topics: ["Numbers 1-100", "Addition & Subtraction", "Basic Shapes", "Patterns"],
+            assessmentMethods: ["Weekly Quizzes", "Term Tests", "Practical Work"],
+            books: ["Primary Mathematics 1", "Math Practice Workbook"],
+            image: "images/math.jpg"
+          },
+          {
+            id: 3,
+            name: "Science",
+            hoursPerWeek: 4,
+            teacher: "Ms. Parker",
+            description: "Introduction to basic scientific concepts through observation and experiments.",
+            topics: ["Living Things", "Materials", "Weather", "Our Body"],
+            assessmentMethods: ["Lab Work", "Projects", "Term Tests"],
+            books: ["Discovery Science Grade 1", "Science Activity Book"],
+            image: "images/science.jpg"
+          }
+    ],
+    5: [ 
+        {
+            id: 1,
+            name: "English",
+            hoursPerWeek: 6,
+            teacher: "Mrs. Msine",
+            description: "Foundational English focusing on reading, writing, and basic grammar.",
+            topics: ["Phonics", "Basic Grammar", "Reading Comprehension", "Writing Skills"],
+            assessmentMethods: ["Continuous Assessment", "Term Tests", "Projects"],
+            books: ["English for Grade 1", "Reading Adventure Book 1"],
+            image: "images/english.jpg"
+          },
+          {
+            id: 2,
+            name: "Mathematics",
+            hoursPerWeek: 5,
+            teacher: "Mr. Kamoto",
+            description: "Basic mathematics covering numbers, basic operations, and shapes.",
+            topics: ["Numbers 1-100", "Addition & Subtraction", "Basic Shapes", "Patterns"],
+            assessmentMethods: ["Weekly Quizzes", "Term Tests", "Practical Work"],
+            books: ["Primary Mathematics 1", "Math Practice Workbook"],
+            image: "images/math.jpg"
+          },
+          {
+            id: 3,
+            name: "Science",
+            hoursPerWeek: 4,
+            teacher: "Ms. Parker",
+            description: "Introduction to basic scientific concepts through observation and experiments.",
+            topics: ["Living Things", "Materials", "Weather", "Our Body"],
+            assessmentMethods: ["Lab Work", "Projects", "Term Tests"],
+            books: ["Discovery Science Grade 1", "Science Activity Book"],
+            image: "images/science.jpg"
+          }
+    ],
+    6: [ 
+        {
+            id: 1,
+            name: "English",
+            hoursPerWeek: 6,
+            teacher: "Mrs. Makumbe",
+            description: "Foundational English focusing on reading, writing, and basic grammar.",
+            topics: ["Phonics", "Basic Grammar", "Reading Comprehension", "Writing Skills"],
+            assessmentMethods: ["Continuous Assessment", "Term Tests", "Projects"],
+            books: ["English for Grade 1", "Reading Adventure Book 1"],
+            image: "images/english.jpg"
+          },
+          {
+            id: 2,
+            name: "Mathematics",
+            hoursPerWeek: 5,
+            teacher: "Mr. Jochomi",
+            description: "Basic mathematics covering numbers, basic operations, and shapes.",
+            topics: ["Numbers 1-100", "Addition & Subtraction", "Basic Shapes", "Patterns"],
+            assessmentMethods: ["Weekly Quizzes", "Term Tests", "Practical Work"],
+            books: ["Primary Mathematics 1", "Math Practice Workbook"],
+            image: "images/math.jpg"
+          },
+          {
+            id: 3,
+            name: "Science",
+            hoursPerWeek: 4,
+            teacher: "Ms. Marasha",
+            description: "Introduction to basic scientific concepts through observation and experiments.",
+            topics: ["Living Things", "Materials", "Weather", "Our Body"],
+            assessmentMethods: ["Lab Work", "Projects", "Term Tests"],
+            books: ["Discovery Science Grade 1", "Science Activity Book"],
+            image: "images/science.jpg"
+          }
+    ],
+    7: [ 
+        {
+            id: 1,
+            name: "English",
+            hoursPerWeek: 6,
+            teacher: "Mrs. Smith",
+            description: "Foundational English focusing on reading, writing, and basic grammar.",
+            topics: ["Phonics", "Basic Grammar", "Reading Comprehension", "Writing Skills"],
+            assessmentMethods: ["Continuous Assessment", "Term Tests", "Projects"],
+            books: ["English for Grade 1", "Reading Adventure Book 1"],
+            image: "images/english.jpg"
+          },
+          {
+            id: 2,
+            name: "Mathematics",
+            hoursPerWeek: 5,
+            teacher: "Mr. Johnson",
+            description: "Basic mathematics covering numbers, basic operations, and shapes.",
+            topics: ["Numbers 1-100", "Addition & Subtraction", "Basic Shapes", "Patterns"],
+            assessmentMethods: ["Weekly Quizzes", "Term Tests", "Practical Work"],
+            books: ["Primary Mathematics 1", "Math Practice Workbook"],
+            image: "images/math.jpg"
+          },
+          {
+            id: 3,
+            name: "Science",
+            hoursPerWeek: 4,
+            teacher: "Ms. Parker",
+            description: "Introduction to basic scientific concepts through observation and experiments.",
+            topics: ["Living Things", "Materials", "Weather", "Our Body"],
+            assessmentMethods: ["Lab Work", "Projects", "Term Tests"],
+            books: ["Discovery Science Grade 1", "Science Activity Book"],
+            image: "images/science.jpg"
+          }
+    ],
+    
 };
 
 const SubjectsPage = () => {
@@ -62,7 +269,7 @@ const SubjectsPage = () => {
   const [subjects] = useState(SAMPLE_SUBJECTS[gradeId] || SAMPLE_SUBJECTS[1]); // Default to Grade 1 if no ID match
 
   return (
-    <div className="min-h-screen bg-navy-900 pt-20">
+    <div className="min-h-screen pt-20">
       <header className="bg-gradient-to-r from-navy-900 to-navy-800 text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold mb-2 text-khaki-300">Grade Subjects</h1>
@@ -75,7 +282,7 @@ const SubjectsPage = () => {
       <div className="container mx-auto px-4 py-6">
         <div className="flex justify-between mb-4">
           <Link
-            to="/grades"
+            to="/branches"
             className="flex items-center bg-khaki-700 text-navy-900 px-4 py-2 rounded-md hover:bg-khaki-600 transition-colors duration-300"
           >
             Back to Grades

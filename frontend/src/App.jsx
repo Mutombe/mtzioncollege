@@ -16,6 +16,7 @@ import FormsPage from "./components/Forms/formPage";
 import ProfilePage from "./components/Navbar/profile";
 import MemoryGallery from "./components/Homepage/gallery";
 import StudentLifePage from "./components/Student/studentLife";
+import FormSubjectsPage from "./components/Forms/subjects";
 import AboutUsPage from "./components/Contact/aboutUs";
 
 const HomePage = lazy(() => import("./components/HomePage/homepage"));
@@ -61,7 +62,7 @@ const ThemedApp = () => {
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/student" element={<StudentDashboard />} />
                 <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/contact-us" element={<ContactPage />} />
+                <Route path="/contact" element={<ContactPage />} />
                 <Route path="/about-us" element={<AboutUsPage />} />
                 <Route path="/student-life" element={<StudentLifePage />} />
                 <Route
@@ -69,6 +70,10 @@ const ThemedApp = () => {
                   element={<GradesPage />}
                 />
                 <Route path="/branches/:branchId/forms" element={<FormsPage />} />
+                <Route
+                  path="/forms/:formId/subjects"
+                  element={<FormSubjectsPage />}
+                />
                 <Route
                   path="grades/:gradeId/subjects"
                   element={<SubjectsPage />}

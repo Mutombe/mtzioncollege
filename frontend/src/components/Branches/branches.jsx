@@ -10,31 +10,33 @@ import {
   Shapes,
   BookA,
   Baby,
+  ArrowLeft
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingPage from "../Loading/loading";
 import ErrorPage from "../Error/error";
 import { Link } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { useNavigate } from "react-router-dom";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 const SAMPLE_BRANCHES = [
   {
     id: 1,
-    name: "Mt Zion Central Campus",
-    location: "Gweru, Zimbabwe",
+    name: "Mt Zion Lochinvar",
+    location: "Lochinvar, Harare, Zimbabwe",
     students: 850,
-    grades: "Form 1-6",
+    grades: "Form 1-4",
     description: "Our flagship campus featuring state-of-the-art facilities and a comprehensive academic program.",
     image: "images/mtzion3.jpg",
     latitude: -19.4167,
-    longitude: 29.75
+    longitude: 31.0
   },
   {
     id: 2,
-    name: "Mt Zion East Campus",
-    location: "Harare, Zimbabwe",
+    name: "Dema School",
+    location: "Chitungwiza, Zimbabwe",
     students: 720,
     grades: "Form 1-4",
     description: "Modern urban campus specializing in technology and innovation.",
@@ -44,14 +46,14 @@ const SAMPLE_BRANCHES = [
   },
   {
     id: 3,
-    name: "Mt Zion South Campus",
-    location: "Bulawayo, Zimbabwe",
+    name: "Eyecourt Campus",
+    location: "CBD, Harare, Zimbabwe",
     students: 680,
-    grades: "Form 1-4",
+    grades: "Form 1-6",
     description: "Known for excellence in arts and cultural programs.",
     image: "images/mtzion2.jpg",
-    latitude: -20.1325,
-    longitude: 28.626
+    latitude: -17.8292,
+    longitude: 31.0522
   }
 ];
 
@@ -67,7 +69,7 @@ L.Icon.Default.mergeOptions({
 });
 
 const BranchesPage = () => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { success, loading, error } = useSelector(
     (state) => state.branch
   );
@@ -77,13 +79,27 @@ const BranchesPage = () => {
 
 
   return (
-    <div className="min-h-screen bg-navy-900 pt-20">
-      <header className="bg-gradient-to-r from-navy-900 to-navy-800 text-white py-12">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-2 text-khaki-300">Our Branches</h1>
-          <p className="text-xl text-khaki-200">
-            Discover Mt Zion College campuses across Zimbabwe
-          </p>
+    <div className="min-h-screen pt-20">
+      <header className="bg-gradient-to-r from-navy-900 to-navy-800 shadow-lg">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <button
+                onClick={() => navigate(-1)}
+                className="mr-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <ArrowLeft size={24} />
+              </button>
+              <div>
+                <h1 className="text-2xl font-bold text-khaki-700">
+                Our Branches
+                </h1>
+                <p className="text-gray-600 dark:text-gray-400">
+                Discover Mt Zion College campuses across Zimbabwe
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </header>
       <div className="container mx-auto px-4 py-6">
@@ -131,7 +147,7 @@ const BranchCard = ({ branch }) => {
         className="w-full h-48 object-cover"
       />
       <div className="p-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        <h2 className="text-2xl font-bold text-khaki-300 mb-2">
           {branch.name}
         </h2>
         <hr className="border-gray-300 dark:border-gray-700 mb-4" />
@@ -139,11 +155,11 @@ const BranchCard = ({ branch }) => {
         <div className="flex justify-between text-gray-600 dark:text-gray-300 mb-4">
         <div className="flex items-center text-gray-600 dark:text-gray-300 mb-4">
           <MapPin size={18} className="mr-2 text-khaki-700" />
-          <span>{branch.location}</span>
+          <span className="">{branch.location}</span>
         </div>
         <div className="flex items-center">
             <BookOpen size={18} className="mr-2 text-khaki-700" />
-            <span>{branch.grades}Form 1 - 4</span>
+            <span>{branch.grades}</span>
           </div>
           </div>
         <div className="flex justify-between text-gray-600 dark:text-gray-300 mb-4">
@@ -153,7 +169,7 @@ const BranchCard = ({ branch }) => {
           </div>
           <div className="flex items-center">
             <BookOpen size={18} className="mr-2 text-khaki-700" />
-            <span>{branch.grades}7 Grades</span>
+            <span>7 Grades</span>
           </div>
         </div>
 
@@ -187,7 +203,7 @@ const BranchCard = ({ branch }) => {
           className="overflow-hidden"
         >
           <p className="text-gray-600 dark:text-gray-300 mb-4">
-            {branch.desscription}
+            {branch.description}
           </p>
         </motion.div>
         <button
@@ -213,7 +229,7 @@ const BranchCard = ({ branch }) => {
 
 const BranchesMap = ({ branches }) => {
   const [geocodedBranches, setGeocodedBranches] = useState([]);
-  const center = [-19.015438, 29.154857]; // Approximate center of Zimbabwe
+  const center = [-19.015438, 29.154857];
 
   useEffect(() => {
     const geocodeBranches = async () => {
@@ -272,6 +288,7 @@ const BranchesMap = ({ branches }) => {
                 <Popup>
                   <div>
                     <h3>{branch.name}</h3>
+                    
                     <p>{branch.location}</p>
                     <p>{branch.students} students</p>
                   </div>
