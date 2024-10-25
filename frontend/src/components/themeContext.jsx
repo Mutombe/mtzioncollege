@@ -14,7 +14,7 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("theme", theme);
     document.body.className =
-      theme === "default" ? "bg-gray-700 text-white" : "bg-gray-900 text-white";
+      theme === "default" ? "bg-navy-900 text-white" : "bg-gray-900 text-white";
   }, [theme]);
 
   const toggleTheme = () => {

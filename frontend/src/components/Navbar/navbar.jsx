@@ -102,6 +102,12 @@ import { useSelector } from 'react-redux';
               {item.label}
             </NavLink>
           ))}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full text-khaki-300 hover:text-khaki-200"
+            >
+              {theme === 'default' ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
         </div>
       </motion.div>
     </nav>
