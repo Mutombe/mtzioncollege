@@ -2,8 +2,4 @@
 Mt Zion College Website
 
 
-
-#Logo
-
-![MTZION-LIGHT](https://github.com/user-attachments/assets/418fd554-2ef6-4028-b670-052810380cd6)
-
+![c1](https://github.com/user-attachments/assets/1f816a88-27a9-47ce-a32a-31b366b0dcce)
